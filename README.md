@@ -1,37 +1,52 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Project Conventions
 
-## Getting Started
-
-First, run the development server:
+### Branch Naming Convention
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git branch <category>/<description>
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Where `category` is either:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `feat` - adding, refactoring or removing a feature.
+- `fix` - fixing a bug.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Where `description` has to:
 
-## Learn More
+1. Be kebab cased.
+2. Shortly describe issue/feature.
 
-To learn more about Next.js, take a look at the following resources:
+Example:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+git branch feature/create-new-button-component
+git branch bugfix/button-overlap-form-on-mobile
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Commit Naming Convention
 
-## Deploy on Vercel
+```bash
+git commit -m '<category>: <description>; <description>; ...'
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+where `category` is either:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-# vaulter-game
+- `feat` - adding a new feature.
+- `fix` - fixing a bug.
+- `refactor` - changing code for peformance or convenience purpose.
+- `chore` - everything else (writing documentation, formatting, adding tests, cleaning useless code etc.).
+
+Where `description` has to:
+
+1. Be a short statement describing the change.
+
+Example:
+
+```bash
+git commit -m 'feat: add new button component; add new button components to templates'
+git commit -m 'fix: add the stop directive to button component to prevent propagation'
+git commit -m 'refactor: rewrite button component in TypeScript'
+git commit -m 'chore: write button documentation'
+```
+
+<sub>Based on condensed [article](https://dev.to/varbsan/a-simplified-convention-for-naming-branches-and-commits-in-git-il4).</sub>
