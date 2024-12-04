@@ -1,0 +1,19 @@
+@use "colors-variables" as *;
+
+.container {
+  margin-top: 100px;
+  position: relative;
+  width: 100%;
+}
+
+.canvasBox {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
+  background-color: $color-sub-1;
+  height: 720px;
+  width: 1280px;
+  border: 1px $color-text solid;
+  border-radius: 5px;
+}

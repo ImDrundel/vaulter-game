@@ -1,5 +1,12 @@
-import styles from "./page.module.css"
+import styles from "./page.module.scss"
+import GameWindow from "./modules/GameWindow"
 
 export default function Home() {
-  return <div className={styles.container}>Hello world</div>
+  return (
+    <div className={styles.container}>
+      <div className={styles.gameWindow}>
+        <GameWindow />
+      </div>
+    </div>
+  )
 }
