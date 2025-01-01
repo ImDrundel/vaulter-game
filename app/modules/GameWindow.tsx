@@ -22,7 +22,7 @@ export default function GameWindow() {
         height: 100,
         speed: 3,
         gravity: 2,
-        jumpHeight: 200,
+        jumpHeight: 400,
         jumpSpeed: 4,
       }
       const playerCoords = {
@@ -31,19 +31,19 @@ export default function GameWindow() {
         top: player.y,
         bottom: player.y + player.height,
       }
-      const platform = {
+      const platformSize = {
         x: 450,
         y: 450,
         width: 150,
         height: 10,
       }
       const platformCoords = {
-        left: platform.x,
-        right: platform.x + platform.width,
-        top: platform.y,
+        leftBorder: platformSize.x,
+        rightBorder: platformSize.x + platformSize.width,
+        topBorder: platformSize.y,
         // bottom: ,
       }
-      // let onPlatform = false
+      let onPlatform = false
       const keysHold: { [key: string]: boolean } = {}
 
       function drawPlayer(ctx: CanvasRenderingContext2D) {
@@ -52,7 +52,12 @@ export default function GameWindow() {
       }
       function drawPlatform() {
         ctx!.fillStyle = "#eee"
-        ctx!.fillRect(platform.x, platform.y, platform.width, platform.height)
+        ctx!.fillRect(
+          platformSize.x,
+          platformSize.y,
+          platformSize.width,
+          platformSize.height
+        )
         requestAnimationFrame(drawPlatform)
       }
       function updatePlayerCoords() {
@@ -90,32 +95,33 @@ export default function GameWindow() {
       }
       function falling() {
         if (
-          playerCoords.bottom == platformCoords.top &&
-          ((playerCoords.left > platformCoords.left &&
-            playerCoords.left < platformCoords.right) ||
-            (playerCoords.left > platformCoords.left &&
-              playerCoords.right < platformCoords.right) ||
-            (playerCoords.right > platformCoords.left &&
-              playerCoords.right < platformCoords.right))
+          playerCoords.bottom == platformCoords.topBorder &&
+          ((playerCoords.left > platformCoords.leftBorder &&
+            playerCoords.left < platformCoords.rightBorder) ||
+            (playerCoords.left > platformCoords.leftBorder &&
+              playerCoords.right < platformCoords.rightBorder) ||
+            (playerCoords.right > platformCoords.leftBorder &&
+              playerCoords.right < platformCoords.rightBorder))
         ) {
-          // onPlatform = true
           player.gravity = 0
+          onPlatform = true
         } else {
-          // onPlatform = false
           player.gravity = 2
+          onPlatform = false
         }
 
         if (player.y <= canvas!.height - 100) {
           player.y = player.y + player.gravity
+        } else {
+          onPlatform = true
         }
-        //ввести преременную "на плвтформе!"
         drawPlayer(ctx!)
         requestAnimationFrame(falling)
       }
 
       //Controls
       window.addEventListener("keydown", (e) => {
-        if (e.key === " ") {
+        if (e.key === " " && onPlatform == true) {
           // if (player.y > canvas.height - player.jumpHeight - player.y) {
           //   player.y = player.y - player.jumpSpeed
           // }
@@ -133,7 +139,7 @@ export default function GameWindow() {
         console.error("2D context not available")
       }
     } else {
-      console.error("Canvas element not found///")
+      console.error("Canvas element not found...")
     }
   }, [])
 
