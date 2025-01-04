@@ -17,6 +17,10 @@ export default function GameWindow() {
     ) as HTMLCanvasElement | null
     if (canvas) {
       //Main code start
+      let onPlatform: boolean = false
+      let onGround: boolean = true
+      let lastFrameRate: number = 0
+
       const ctx: CanvasRenderingContext2D | null = canvas.getContext("2d")
       canvas.height = canvas.clientHeight
       canvas.width = canvas.clientWidth
@@ -26,8 +30,8 @@ export default function GameWindow() {
         y: canvas.height - 100,
         width: 30,
         height: 100,
-        speed: 3,
-        gravity: 4,
+        speed: 500,
+        gravity: 0,
         jumpHeight: 250,
         jumpSpeed: 4,
       }
@@ -51,10 +55,40 @@ export default function GameWindow() {
       //   // bottom: ,
       // }
 
-      const arrStaticPlatforms: Array<Platform> = [
+      const staticPlatforms: Array<Platform> = [
         {
           x: 750,
           y: 400,
+          width: 150,
+          height: 10,
+          get leftBorder() {
+            return this.x
+          },
+          get rightBorder() {
+            return this.x + this.width
+          },
+          get topBorder() {
+            return this.y
+          },
+        },
+        {
+          x: 650,
+          y: 200,
+          width: 150,
+          height: 10,
+          get leftBorder() {
+            return this.x
+          },
+          get rightBorder() {
+            return this.x + this.width
+          },
+          get topBorder() {
+            return this.y
+          },
+        },
+        {
+          x: 450,
+          y: 200,
           width: 150,
           height: 10,
           get leftBorder() {
@@ -99,9 +133,6 @@ export default function GameWindow() {
         },
       ]
 
-      let onPlatform = false
-      let onGround = true
-
       function drawPlayer(ctx: CanvasRenderingContext2D) {
         ctx.fillStyle = "green"
         ctx.fillRect(player.x, player.y, player.width, player.height)
@@ -116,21 +147,20 @@ export default function GameWindow() {
       //   )
       //   requestAnimationFrame(drawPlatform)
       // }
-      function drawAllPlatform() {
-        arrStaticPlatforms.forEach((platform) => {
+      function drawStaticPlatform() {
+        staticPlatforms.forEach((platform) => {
           ctx!.fillStyle = "#eee"
           ctx!.fillRect(platform.x, platform.y, platform.width, platform.height)
         })
 
-        requestAnimationFrame(drawAllPlatform)
+        // requestAnimationFrame(drawAllPlatform)
       }
-
       function updatePlayerCoords() {
         playerCoords.left = player.x
         playerCoords.right = player.x + player.width
         playerCoords.top = player.y
         playerCoords.bottom = player.y + player.height
-        requestAnimationFrame(updatePlayerCoords)
+        // requestAnimationFrame(updatePlayerCoords)
       }
 
       //Controls
@@ -145,18 +175,18 @@ export default function GameWindow() {
         // console.log(keysHold)
       })
 
-      function moving() {
+      function moving(deltaTime: number) {
+        // console.log(deltaTime)
         if (keysHold["a"] && player.x > 0) {
-          player.x -= player.speed
+          player.x -= player.speed * deltaTime
         }
         if (keysHold["d"] && player.x < canvas!.width - player.width) {
-          player.x += player.speed
+          player.x += player.speed * deltaTime
         }
+        // ctx!.clearRect(0, 0, canvas!.width, canvas!.height)
+        // drawPlayer(ctx!)
 
-        ctx!.clearRect(0, 0, canvas!.width, canvas!.height)
-        drawPlayer(ctx!)
-
-        requestAnimationFrame(moving)
+        // requestAnimationFrame(moving)
         // console.log(player)
         // console.log(playerCoords)
         // console.log(platformCoords)
@@ -186,11 +216,13 @@ export default function GameWindow() {
       //   drawPlayer(ctx!)
       //   requestAnimationFrame(falling)
       // }
-      function fallingAll() {
+      function falling(deltaTime: number) {
         onPlatform = false
-        arrStaticPlatforms.forEach((platform) => {
+        staticPlatforms.forEach((platform) => {
           if (
-            playerCoords.bottom == platform.topBorder &&
+            playerCoords.bottom >= platform.topBorder &&
+            playerCoords.bottom <=
+              platform.topBorder + player.gravity * deltaTime &&
             ((playerCoords.left > platform.leftBorder &&
               playerCoords.left < platform.rightBorder) ||
               (playerCoords.left > platform.leftBorder &&
@@ -204,17 +236,18 @@ export default function GameWindow() {
         })
 
         if (player.y <= canvas!.height - player.height) {
-          player.y = player.y + player.gravity
+          player.y = Math.round(player.y + player.gravity * deltaTime)
           onGround = false
+          console.log(player.y)
         } else {
           onGround = true
         }
 
         if (!onPlatform || !onGround) {
-          player.gravity = 2
+          player.gravity = 500
         }
-        drawPlayer(ctx!)
-        requestAnimationFrame(fallingAll)
+        // drawPlayer(ctx!)
+        // requestAnimationFrame(fallingAll)
       }
       window.addEventListener("keydown", (e) => {
         if (e.key === " " && (onPlatform == true || onGround == true)) {
@@ -225,14 +258,29 @@ export default function GameWindow() {
         }
       })
 
+      function gameLoop(timestamp: number) {
+        const deltaTime = (timestamp - lastFrameRate) / 1000
+        lastFrameRate = timestamp
+
+        ctx!.clearRect(0, 0, canvas!.width, canvas!.height)
+        drawPlayer(ctx!)
+        drawStaticPlatform()
+        moving(deltaTime)
+        falling(deltaTime)
+        updatePlayerCoords()
+        // console.log(timestamp, deltaTime)
+        requestAnimationFrame(gameLoop)
+      }
+
       // Context checking
       if (ctx) {
-        moving()
+        requestAnimationFrame(gameLoop)
+        // moving()
         // falling()
-        fallingAll()
+        // fallingAll()
         // drawPlatform()
-        drawAllPlatform()
-        updatePlayerCoords()
+        // drawAllPlatform()
+        // updatePlayerCoords()
 
         //Main code end
       } else {
