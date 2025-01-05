@@ -30,10 +30,10 @@ export default function GameWindow() {
         y: canvas.height - 100,
         width: 30,
         height: 100,
-        speed: 500,
+        speed: 400,
         gravity: 0,
-        jumpHeight: 250,
-        jumpSpeed: 4,
+        jumpHeight: 3,
+        jumpSpeed: 100,
       }
       const playerCoords = {
         left: player.x,
@@ -147,13 +147,12 @@ export default function GameWindow() {
       //   )
       //   requestAnimationFrame(drawPlatform)
       // }
+
       function drawStaticPlatform() {
         staticPlatforms.forEach((platform) => {
           ctx!.fillStyle = "#eee"
           ctx!.fillRect(platform.x, platform.y, platform.width, platform.height)
         })
-
-        // requestAnimationFrame(drawAllPlatform)
       }
       function updatePlayerCoords() {
         playerCoords.left = player.x
@@ -168,7 +167,6 @@ export default function GameWindow() {
 
       window.addEventListener("keydown", (e) => {
         keysHold[e.key] = true
-        // console.log(keysHold)
       })
       window.addEventListener("keyup", (e) => {
         keysHold[e.key] = false
@@ -191,32 +189,9 @@ export default function GameWindow() {
         // console.log(playerCoords)
         // console.log(platformCoords)
       }
-      // function falling() {
-      //   if (
-      //     playerCoords.bottom == platformCoords.topBorder &&
-      //     ((playerCoords.left > platformCoords.leftBorder &&
-      //       playerCoords.left < platformCoords.rightBorder) ||
-      //       (playerCoords.left > platformCoords.leftBorder &&
-      //         playerCoords.right < platformCoords.rightBorder) ||
-      //       (playerCoords.right > platformCoords.leftBorder &&
-      //         playerCoords.right < platformCoords.rightBorder))
-      //   ) {
-      //     player.gravity = 0
-      //     onPlatform = true
-      //   } else {
-      //     player.gravity = 2
-      //     onPlatform = false
-      //   }
 
-      //   if (player.y <= canvas!.height - 100) {
-      //     player.y = player.y + player.gravity
-      //   } else {
-      //     onPlatform = true
-      //   }
-      //   drawPlayer(ctx!)
-      //   requestAnimationFrame(falling)
-      // }
       function falling(deltaTime: number) {
+        // falling + "onPlatform" check
         onPlatform = false
         staticPlatforms.forEach((platform) => {
           if (
@@ -232,6 +207,7 @@ export default function GameWindow() {
           ) {
             player.gravity = 0
             onPlatform = true
+            player.y = platform.topBorder - player.height + 1
           }
         })
 
@@ -246,15 +222,17 @@ export default function GameWindow() {
         if (!onPlatform || !onGround) {
           player.gravity = 500
         }
-        // drawPlayer(ctx!)
-        // requestAnimationFrame(fallingAll)
       }
+
       window.addEventListener("keydown", (e) => {
         if (e.key === " " && (onPlatform == true || onGround == true)) {
-          // if (player.y > canvas.height - player.jumpHeight - player.y) {
-          //   player.y = player.y - player.jumpSpeed
-          // }
-          player.y = player.y - player.jumpHeight
+          const jumping = setInterval(() => {
+            player.gravity = 0
+            player.y = player.y - player.jumpHeight
+          }, 1)
+          setTimeout(() => {
+            clearInterval(jumping)
+          }, 250)
         }
       })
 
@@ -267,10 +245,12 @@ export default function GameWindow() {
         drawStaticPlatform()
         moving(deltaTime)
         falling(deltaTime)
+
         updatePlayerCoords()
-        // console.log(timestamp, deltaTime)
         requestAnimationFrame(gameLoop)
       }
+
+      //Main code end
 
       // Context checking
       if (ctx) {
@@ -281,8 +261,6 @@ export default function GameWindow() {
         // drawPlatform()
         // drawAllPlatform()
         // updatePlayerCoords()
-
-        //Main code end
       } else {
         console.error("2D context not available")
       }
@@ -297,3 +275,6 @@ export default function GameWindow() {
     </div>
   )
 }
+
+// добавить плавающие платформы
+// добавить движение экарна
