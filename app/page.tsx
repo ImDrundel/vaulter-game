@@ -1,5 +1,5 @@
 import styles from "./page.module.scss"
-import GameWindow from "./modules/GameWindow"
+import GameWindow from "./modules/GameWindow/GameWindow"
 
 export default function Home() {
   return (

@@ -1,0 +1,20 @@
+[
+  {
+    "x": 620,
+    "y": 0,
+    "width": 10,
+    "height": 1000,
+    "leftBorder": 620,
+    "rightBorder": 630,
+    "topBorder": 0
+  },
+  {
+    "x": 4630,
+    "y": 0,
+    "width": 10,
+    "height": 1000,
+    "leftBorder": 4630,
+    "rightBorder": 4640,
+    "topBorder": 0
+  }
+]
