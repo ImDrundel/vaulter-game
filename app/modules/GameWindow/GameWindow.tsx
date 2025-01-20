@@ -9,15 +9,15 @@ import { moving } from "./moving"
 import { falling } from "./falling"
 import {
   Platform,
-  Player,
+  CharacterParam,
   PlatformJSON,
   Wall,
   OnSurface,
-  PlayerCoords,
+  CharacterCoords,
   LevelBoundary,
 } from "./types"
 import {
-  drawPlayer,
+  drawCharacter,
   drawStaticPlatform,
   drawLevelBoundaryWall,
   drawChest,
@@ -58,7 +58,7 @@ export default function GameWindow() {
       canvas.height = canvas.clientHeight
       canvas.width = canvas.clientWidth
 
-      const player: Player = {
+      const characterParam: CharacterParam = {
         x: canvas.width / 2,
         y: canvas.height - 110,
         width: 37,
@@ -68,11 +68,11 @@ export default function GameWindow() {
         jumpHeight: 3,
         jumpSpeed: 100,
       }
-      const playerCoords: PlayerCoords = {
-        left: player.x,
-        right: player.x + player.width,
-        top: player.y,
-        bottom: player.y + player.height,
+      const characterCoords: CharacterCoords = {
+        left: characterParam.x,
+        right: characterParam.x + characterParam.width,
+        top: characterParam.y,
+        bottom: characterParam.y + characterParam.height,
       }
 
       const levelBoundaryWall: Array<Wall> = levelBoundaryWallJSON.map(
@@ -100,11 +100,11 @@ export default function GameWindow() {
         }
       )
 
-      function updatePlayerCoords() {
-        playerCoords.left = player.x
-        playerCoords.right = player.x + player.width
-        playerCoords.top = player.y
-        playerCoords.bottom = player.y + player.height
+      function updateCharacterCoords() {
+        characterCoords.left = characterParam.x
+        characterCoords.right = characterParam.x + characterParam.width
+        characterCoords.top = characterParam.y
+        characterCoords.bottom = characterParam.y + characterParam.height
       }
 
       //controls
@@ -125,8 +125,8 @@ export default function GameWindow() {
           //onSurface.onPlatform & onGround check occurs in the 'falling' function in the 'falling.ts' file
         ) {
           const jumping = setInterval(() => {
-            player.gravity = 0
-            player.y = player.y - player.jumpHeight
+            characterParam.gravity = 0
+            characterParam.y = characterParam.y - characterParam.jumpHeight
           }, 1)
           setTimeout(() => {
             clearInterval(jumping)
@@ -134,32 +134,45 @@ export default function GameWindow() {
         }
       })
 
+      const texture_level_bounadry_wall = new Image()
+      texture_level_bounadry_wall.src = "/texture_level_bounadry_wall.jpg"
+      const texture_platform = new Image()
+      texture_platform.src = "/texture_platform.avif"
+      const texture_character = new Image()
+      texture_character.src = "/texture_character.png"
+      const texture_chest = new Image()
+      texture_chest.src = "/texture_chest.png"
+
       function gameLoop(timestamp: number) {
         const deltaTime = (timestamp - lastFrameRate) / 1000
         lastFrameRate = timestamp
         ctx!.clearRect(0, 0, canvas!.width, canvas!.height)
 
-        drawPlayer(ctx!, player)
-        drawStaticPlatform(staticPlatforms, ctx)
-        drawLevelBoundaryWall(levelBoundaryWall, ctx)
-        drawChest(staticPlatforms, ctx)
+        drawCharacter(ctx!, characterParam, texture_character)
+        drawStaticPlatform(staticPlatforms, ctx, texture_platform)
+        drawLevelBoundaryWall(
+          levelBoundaryWall,
+          ctx,
+          texture_level_bounadry_wall
+        )
+        drawChest(staticPlatforms, ctx, texture_chest)
         moving(
           deltaTime,
           levelBoundary,
           levelBoundaryWall,
           keysHold,
-          player,
+          characterParam,
           staticPlatforms
         )
         falling(
           deltaTime,
           staticPlatforms,
-          playerCoords,
-          player,
+          characterCoords,
+          characterParam,
           canvas,
           onSurface
         )
-        updatePlayerCoords()
+        updateCharacterCoords()
         requestAnimationFrame(gameLoop)
       }
 

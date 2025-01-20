@@ -1,49 +1,43 @@
-import { Platform, PlayerCoords, Player } from "./types"
+import { Platform, CharacterCoords, CharacterParam, OnSurface } from "./types"
 
-// eslint-disable-next-line prefer-const
-// let onPlatform: boolean = false
-// eslint-disable-next-line prefer-const
-// let onGround: boolean = true
 export function falling(
   deltaTime: number,
-
   staticPlatforms: Array<Platform>,
-  playerCoords: PlayerCoords,
-  player: Player,
+  characterCoords: CharacterCoords,
+  characterParam: CharacterParam,
   canvas: HTMLCanvasElement | null,
-  onSurface: { onGround: boolean; onPlatform: boolean }
+  onSurface: OnSurface
 ) {
   // falling + "onPlatform" check
   onSurface.onPlatform = false
   staticPlatforms.forEach((platform) => {
     if (
-      playerCoords.bottom >= platform.topBorder &&
-      playerCoords.bottom <= platform.topBorder + player.gravity * deltaTime &&
-      ((playerCoords.left > platform.leftBorder &&
-        playerCoords.left < platform.rightBorder) ||
-        (playerCoords.left > platform.leftBorder &&
-          playerCoords.right < platform.rightBorder) ||
-        (playerCoords.right > platform.leftBorder &&
-          playerCoords.right < platform.rightBorder))
+      characterCoords.bottom >= platform.topBorder &&
+      characterCoords.bottom <=
+        platform.topBorder + characterParam.gravity * deltaTime &&
+      ((characterCoords.left > platform.leftBorder &&
+        characterCoords.left < platform.rightBorder) ||
+        (characterCoords.left > platform.leftBorder &&
+          characterCoords.right < platform.rightBorder) ||
+        (characterCoords.right > platform.leftBorder &&
+          characterCoords.right < platform.rightBorder))
     ) {
-      player.gravity = 0
+      characterParam.gravity = 0
       onSurface.onPlatform = true
-      player.y = platform.topBorder - player.height + 1
+      characterParam.y = platform.topBorder - characterParam.height + 1
     }
   })
 
-  if (player.y <= canvas!.height - player.height) {
-    player.y = Math.round(player.y + player.gravity * deltaTime)
+  if (characterParam.y <= canvas!.height - characterParam.height) {
+    characterParam.y = Math.round(
+      characterParam.y + characterParam.gravity * deltaTime
+    )
     onSurface.onGround = false
   } else {
     onSurface.onGround = true
   }
 
   if (!onSurface.onPlatform || !onSurface.onGround) {
-    player.gravity = 500
+    characterParam.gravity = 500
   }
 }
-
-// export function jump(player: Player) {
-
-// }

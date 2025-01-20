@@ -18,7 +18,7 @@ export interface Wall {
   topBorder: number
 }
 
-export interface Player {
+export interface CharacterParam {
   x: number
   y: number
   width: number
@@ -36,7 +36,7 @@ export interface PlatformJSON {
   height: number
 }
 
-export interface PlayerCoords {
+export interface CharacterCoords {
   left: number
   right: number
   top: number

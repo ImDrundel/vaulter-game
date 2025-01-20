@@ -1,39 +1,38 @@
-import { Platform, Player, Wall } from "./types"
-// import levelBoundaryWall from "@/public/levelBoundaryWall.json"
+import { Platform, CharacterParam, Wall } from "./types"
 
 export function moving(
   deltaTime: number,
   levelBoundary: { leftBorder: number; rightBorder: number },
   levelBoundaryWall: Array<Wall>,
   keysHold: { [key: string]: boolean },
-  player: Player,
+  characterParam: CharacterParam,
   staticPlatforms: Array<Platform>
 ) {
-  if (keysHold["KeyA"] && player.x >= levelBoundary.leftBorder) {
+  if (keysHold["KeyA"] && characterParam.x >= levelBoundary.leftBorder) {
     staticPlatforms.map((platform: Platform) => {
-      platform.x += player.speed * deltaTime
-      platform.leftBorder += player.speed * deltaTime
-      platform.rightBorder += player.speed * deltaTime
+      platform.x += characterParam.speed * deltaTime
+      platform.leftBorder += characterParam.speed * deltaTime
+      platform.rightBorder += characterParam.speed * deltaTime
     })
     levelBoundaryWall.map((platform: Platform) => {
-      platform.x += player.speed * deltaTime
+      platform.x += characterParam.speed * deltaTime
     })
-    levelBoundary.leftBorder += player.speed * deltaTime
-    levelBoundary.rightBorder += player.speed * deltaTime
+    levelBoundary.leftBorder += characterParam.speed * deltaTime
+    levelBoundary.rightBorder += characterParam.speed * deltaTime
   }
   if (
     keysHold["KeyD"] &&
-    player.x + player.width <= levelBoundary.rightBorder
+    characterParam.x + characterParam.width <= levelBoundary.rightBorder
   ) {
     staticPlatforms.map((platform: Platform) => {
-      platform.x -= player.speed * deltaTime
-      platform.leftBorder -= player.speed * deltaTime
-      platform.rightBorder -= player.speed * deltaTime
+      platform.x -= characterParam.speed * deltaTime
+      platform.leftBorder -= characterParam.speed * deltaTime
+      platform.rightBorder -= characterParam.speed * deltaTime
     })
     levelBoundaryWall.map((platform: Platform) => {
-      platform.x -= player.speed * deltaTime
+      platform.x -= characterParam.speed * deltaTime
     })
-    levelBoundary.leftBorder -= player.speed * deltaTime
-    levelBoundary.rightBorder -= player.speed * deltaTime
+    levelBoundary.leftBorder -= characterParam.speed * deltaTime
+    levelBoundary.rightBorder -= characterParam.speed * deltaTime
   }
 }
