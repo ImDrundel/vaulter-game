@@ -1,34 +1,25 @@
 @use "colors-variables" as *;
 
 .container {
-  margin-top: 100px;
-  position: relative;
+  display: grid;
+  margin-top: 30px;
   width: 100%;
-}
-.levelChooseBox {
-  text-align: center;
-}
-.levelChooseText {
-  font-size: 2rem;
+  row-gap: 25px;
+  grid-template-columns: 1fr 1300px 1fr;
+  grid-template-areas:
+    ". levelChoose  ."
+    ".  canvas  gameInfo";
 }
 
-.levelChooseButton {
-  width: 40px;
-  height: 40px;
-  border: 1px white solid;
-  border-radius: 5px;
-  margin-right: 2px;
-}
 .canvasBox {
-  margin-top: 50px;
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translate(-50%, 0);
+  grid-area: canvas;
+  align-self: start;
+  justify-self: center;
+
   background-image: url("/texture_background.jpg");
-  background-size: 10%;
+  background-size: 13%;
   height: 720px;
   width: 1280px;
-  border: 1px $color-text solid;
+  border: 2px $color-text solid;
   border-radius: 5px;
 }

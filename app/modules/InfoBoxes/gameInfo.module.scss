@@ -1,0 +1,52 @@
+@use "colors-variables" as *;
+.container {
+  grid-area: gameInfo;
+}
+.container {
+  margin-right: 20px;
+}
+.ruleIcon {
+  &:hover {
+    cursor: pointer;
+  }
+}
+.rulesOpen {
+  display: none;
+}
+.rulesClose {
+  margin-top: 10px;
+  padding: 5px;
+  border: 1px $color-text dashed;
+  border-radius: 5px;
+  .keyFunctionBox {
+    padding: 5px;
+    display: flex;
+    .keyIcon {
+      border: 1px $color-text solid;
+      border-radius: 5px;
+      padding: 3px;
+    }
+    .keyDescription {
+      margin-left: 5px;
+      padding: 3px;
+    }
+  }
+}
+
+.infoIcon {
+  margin-top: 10px;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.infoOpen {
+  display: none;
+}
+
+.infoClose {
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px $color-text dashed;
+  border-radius: 5px;
+}

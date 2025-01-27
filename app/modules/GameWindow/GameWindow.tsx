@@ -1,6 +1,6 @@
 "use client"
 import { useEffect, useState } from "react"
-import styles from "./GameWindow.module.scss"
+import style from "./GameWindow.module.scss"
 import levelBoundaryWallJSON from "@/public/levelBoundaryWall.json"
 import level_01 from "@/public/levels/level_01.json"
 import level_02 from "@/public/levels/level_02.json"
@@ -22,6 +22,8 @@ import {
   drawLevelBoundaryWall,
   drawChest,
 } from "./draws"
+import LevelChoose from "../UI/levelChoose"
+import GameInfo from "../InfoBoxes/gameInfo"
 
 export default function GameWindow() {
   const [currentLevel, setCurrentLevel] = useState<number>(0)
@@ -190,29 +192,11 @@ export default function GameWindow() {
   }, [currentLevel, reset])
 
   return (
-    <div className={styles.container}>
-      <div className={styles.levelChooseBox}>
-        <span className={styles.levelChooseText}>Choose level: </span>
-        <button
-          className={styles.levelChooseButton}
-          onClick={() => changeLevel(0)}
-        >
-          1
-        </button>
-        <button
-          className={styles.levelChooseButton}
-          onClick={() => changeLevel(1)}
-        >
-          2
-        </button>
-        <button
-          className={styles.levelChooseButton}
-          onClick={() => changeLevel(2)}
-        >
-          3
-        </button>
-      </div>
-      <canvas id="mainCanvas" className={styles.canvasBox}></canvas>
+    <div className={style.container}>
+      <LevelChoose changeLevel={changeLevel} />
+
+      <canvas id="mainCanvas" className={style.canvasBox}></canvas>
+      <GameInfo />
     </div>
   )
 }
