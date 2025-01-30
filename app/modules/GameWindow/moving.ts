@@ -2,7 +2,7 @@ import { Platform, CharacterParam, Wall } from "./types"
 
 export function moving(
   deltaTime: number,
-  levelBoundary: { leftBorder: number; rightBorder: number },
+  levelBoundary: { leftBorder: number },
   levelBoundaryWall: Array<Wall>,
   keysHold: { [key: string]: boolean },
   characterParam: CharacterParam,
@@ -18,11 +18,11 @@ export function moving(
       platform.x += characterParam.speed * deltaTime
     })
     levelBoundary.leftBorder += characterParam.speed * deltaTime
-    levelBoundary.rightBorder += characterParam.speed * deltaTime
+    // levelBoundary.rightBorder += characterParam.speed * deltaTime
   }
   if (
-    keysHold["KeyD"] &&
-    characterParam.x + characterParam.width <= levelBoundary.rightBorder
+    keysHold["KeyD"]
+    // && characterParam.x + characterParam.width <= levelBoundary.rightBorder
   ) {
     staticPlatforms.map((platform: Platform) => {
       platform.x -= characterParam.speed * deltaTime
@@ -33,6 +33,6 @@ export function moving(
       platform.x -= characterParam.speed * deltaTime
     })
     levelBoundary.leftBorder -= characterParam.speed * deltaTime
-    levelBoundary.rightBorder -= characterParam.speed * deltaTime
+    // levelBoundary.rightBorder -= characterParam.speed * deltaTime
   }
 }

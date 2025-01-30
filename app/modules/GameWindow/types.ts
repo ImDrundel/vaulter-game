@@ -50,5 +50,5 @@ export interface OnSurface {
 
 export interface LevelBoundary {
   leftBorder: number
-  rightBorder: number
+  // rightBorder: number
 }

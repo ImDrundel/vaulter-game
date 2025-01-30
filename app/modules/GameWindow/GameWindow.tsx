@@ -110,7 +110,7 @@ export default function GameWindow() {
       )
       const levelBoundary: LevelBoundary = {
         leftBorder: levelBoundaryWall[0].rightBorder,
-        rightBorder: levelBoundaryWall[1].leftBorder,
+        // rightBorder: levelBoundaryWall[1].leftBorder,
       }
 
       const blankStaticPlatforms: Array<PlatformJSON> =
