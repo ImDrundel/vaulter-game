@@ -1,5 +1,5 @@
 "use client"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import style from "./GameWindow.module.scss"
 import levelBoundaryWallJSON from "@/public/levelBoundaryWall.json"
 import level_01 from "@/public/levels/level_01.json"
@@ -7,6 +7,7 @@ import level_02 from "@/public/levels/level_02.json"
 import level_03 from "@/public/levels/level_03.json"
 import { moving } from "./moving"
 import { falling } from "./falling"
+import { generateEndgameLevel } from "./generateEndgame"
 import {
   Platform,
   CharacterParam,
@@ -31,29 +32,52 @@ export default function GameWindow() {
     setCurrentLevel(level)
   }
 
+  const [finalEndgameLevel, setFinalEndgameLevel] = useState<
+    Array<PlatformJSON>
+  >([{ x: 680, y: 550, width: 120, height: 32 }])
+  const memoizedEndgameLevel = useMemo(
+    () => finalEndgameLevel,
+    [finalEndgameLevel]
+  )
+  function startEndgameLevel(diff: number) {
+    const endgameLevelJSON = generateEndgameLevel(diff)
+    setFinalEndgameLevel(JSON.parse(endgameLevelJSON))
+    //SetCurrentLevel('count of levels') must be increased manually when adding a new level
+    //No automation as there are no plans to add more levels
+
+    setCurrentLevel(3)
+    return finalEndgameLevel
+  }
+  useEffect(() => {
+    ;(document.activeElement as HTMLElement)?.blur()
+  }, [currentLevel])
+
   const [reset, setReset] = useState<boolean>(false)
-  window.addEventListener("keydown", (e) => {
-    if (e.code === "KeyR") {
-      setReset(true)
-    }
-  })
-  window.addEventListener("keyup", (e) => {
-    if (e.code === "KeyR") {
-      setReset(false)
-    }
-  })
+  useEffect(() => {
+    window.addEventListener("keydown", (e) => {
+      if (e.code === "KeyR") {
+        setReset(true)
+      }
+    })
+
+    window.addEventListener("keyup", (e) => {
+      if (e.code === "KeyR") {
+        setReset(false)
+      }
+    })
+  }, [])
 
   useEffect(() => {
+    const levelChoose = [level_01, level_02, level_03, memoizedEndgameLevel]
+
     const onSurface: OnSurface = {
       onPlatform: false,
       onGround: true,
     }
-    const levelChoose = [level_01, level_02, level_03]
     const canvas = document.getElementById(
       "mainCanvas"
     ) as HTMLCanvasElement | null
     if (canvas) {
-      //Main code start
       let lastFrameRate: number = 0
 
       const ctx: CanvasRenderingContext2D | null = canvas.getContext("2d")
@@ -122,8 +146,7 @@ export default function GameWindow() {
       window.addEventListener("keydown", (e) => {
         if (
           e.code === "Space" &&
-          ((onSurface.onPlatform as boolean) == true ||
-            onSurface.onGround == true)
+          (onSurface.onPlatform == true || onSurface.onGround == true)
           //onSurface.onPlatform & onGround check occurs in the 'falling' function in the 'falling.ts' file
         ) {
           const jumping = setInterval(() => {
@@ -136,6 +159,7 @@ export default function GameWindow() {
         }
       })
 
+      //images for functions in 'draws.ts'
       const texture_level_bounadry_wall = new Image()
       texture_level_bounadry_wall.src = "/texture_level_bounadry_wall.jpg"
       const texture_platform = new Image()
@@ -176,6 +200,7 @@ export default function GameWindow() {
         )
         updateCharacterCoords()
         requestAnimationFrame(gameLoop)
+        // console.log("hello")
       }
 
       //Main code end
@@ -189,11 +214,14 @@ export default function GameWindow() {
     } else {
       console.error("Canvas element not found...")
     }
-  }, [currentLevel, reset])
+  }, [currentLevel, reset, memoizedEndgameLevel])
 
   return (
     <div className={style.container}>
-      <LevelChoose changeLevel={changeLevel} />
+      <LevelChoose
+        changeLevel={changeLevel}
+        startEndgameLevel={startEndgameLevel}
+      />
 
       <canvas id="mainCanvas" className={style.canvasBox}></canvas>
       <GameInfo />
