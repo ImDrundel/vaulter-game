@@ -7,6 +7,7 @@ import level_02 from "@/public/levels/level_02.json"
 import level_03 from "@/public/levels/level_03.json"
 import { moving } from "./moving"
 import { falling } from "./falling"
+import { jump } from "./jump"
 import { generateEndgameLevel } from "./generateEndgame"
 import {
   Platform,
@@ -52,19 +53,26 @@ export default function GameWindow() {
     ;(document.activeElement as HTMLElement)?.blur()
   }, [currentLevel])
 
+  //reset level buy 'R' key
   const [reset, setReset] = useState<boolean>(false)
   useEffect(() => {
-    window.addEventListener("keydown", (e) => {
+    function keyRDown(e: KeyboardEvent) {
       if (e.code === "KeyR") {
         setReset(true)
       }
-    })
-
-    window.addEventListener("keyup", (e) => {
+    }
+    function keyRUp(e: KeyboardEvent) {
       if (e.code === "KeyR") {
         setReset(false)
       }
-    })
+    }
+
+    window.addEventListener("keydown", keyRDown)
+    window.addEventListener("keydown", keyRUp)
+    return () => {
+      window.removeEventListener("keydown", keyRDown)
+      window.removeEventListener("keydown", keyRUp)
+    }
   }, [])
 
   useEffect(() => {
@@ -77,6 +85,17 @@ export default function GameWindow() {
     const canvas = document.getElementById(
       "mainCanvas"
     ) as HTMLCanvasElement | null
+
+    let keysHold: { [code: string]: boolean } = {}
+    function keyDown(e: KeyboardEvent) {
+      keysHold[e.code] = true
+    }
+    function keyUp(e: KeyboardEvent) {
+      keysHold[e.code] = false
+    }
+    window.addEventListener("keydown", keyDown)
+    window.addEventListener("keyup", keyUp)
+
     if (canvas) {
       let lastFrameRate: number = 0
 
@@ -91,7 +110,7 @@ export default function GameWindow() {
         height: 100,
         speed: 400,
         gravity: 0,
-        jumpHeight: 3,
+        jumpHeight: 21,
         jumpSpeed: 100,
       }
       const characterCoords: CharacterCoords = {
@@ -100,7 +119,14 @@ export default function GameWindow() {
         top: characterParam.y,
         bottom: characterParam.y + characterParam.height,
       }
+      function updateCharacterCoords() {
+        characterCoords.left = characterParam.x
+        characterCoords.right = characterParam.x + characterParam.width
+        characterCoords.top = characterParam.y
+        characterCoords.bottom = characterParam.y + characterParam.height
+      }
 
+      // Only one wall remains in the development process. I saved the structure in case other walls are added in the future
       const levelBoundaryWall: Array<Wall> = levelBoundaryWallJSON.map(
         (object) => {
           return {
@@ -115,6 +141,7 @@ export default function GameWindow() {
 
       const blankStaticPlatforms: Array<PlatformJSON> =
         levelChoose[currentLevel]
+
       const staticPlatforms: Array<Platform> = blankStaticPlatforms.map(
         (object) => {
           return {
@@ -125,39 +152,6 @@ export default function GameWindow() {
           }
         }
       )
-
-      function updateCharacterCoords() {
-        characterCoords.left = characterParam.x
-        characterCoords.right = characterParam.x + characterParam.width
-        characterCoords.top = characterParam.y
-        characterCoords.bottom = characterParam.y + characterParam.height
-      }
-
-      //controls
-      const keysHold: { [code: string]: boolean } = {}
-      window.addEventListener("keydown", (e) => {
-        keysHold[e.code] = true
-      })
-      window.addEventListener("keyup", (e) => {
-        keysHold[e.code] = false
-      })
-
-      //jumping
-      window.addEventListener("keydown", (e) => {
-        if (
-          e.code === "Space" &&
-          (onSurface.onPlatform == true || onSurface.onGround == true)
-          //onSurface.onPlatform & onGround check occurs in the 'falling' function in the 'falling.ts' file
-        ) {
-          const jumping = setInterval(() => {
-            characterParam.gravity = 0
-            characterParam.y = characterParam.y - characterParam.jumpHeight
-          }, 1)
-          setTimeout(() => {
-            clearInterval(jumping)
-          }, 250)
-        }
-      })
 
       //images for functions in 'draws.ts'
       const texture_level_bounadry_wall = new Image()
@@ -190,6 +184,7 @@ export default function GameWindow() {
           characterParam,
           staticPlatforms
         )
+        jump(keysHold, characterParam, onSurface)
         falling(
           deltaTime,
           staticPlatforms,
@@ -208,11 +203,18 @@ export default function GameWindow() {
       // Context checking
       if (ctx) {
         requestAnimationFrame(gameLoop)
+        // window.removeEventListener("keydown", jump)
       } else {
         console.error("2D context not available")
       }
     } else {
       console.error("Canvas element not found...")
+    }
+    // window.addEventListener("keydown", jump)
+    return () => {
+      window.removeEventListener("keydown", keyDown)
+      window.removeEventListener("keyup", keyUp)
+      keysHold = {}
     }
   }, [currentLevel, reset, memoizedEndgameLevel])
 

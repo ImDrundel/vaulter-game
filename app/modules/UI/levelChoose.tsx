@@ -18,9 +18,9 @@ const LevelChoose: React.FC<LevelChooseProps> = ({
   ]
 
   function changeDifficulty(count: number) {
-    if (count >= 0) setlevelDifficulty(count)
+    if (count >= 1) setlevelDifficulty(count)
   }
-  const [levelDifficulty, setlevelDifficulty] = useState<number>(0)
+  const [levelDifficulty, setlevelDifficulty] = useState<number>(1)
 
   return (
     <div className={style.container}>
