@@ -36,9 +36,11 @@ const LevelChoose: React.FC<LevelChooseProps> = ({
           </button>
         ))}
       </div>
+
       <div className={style.endgameLevelBox}>
         <div>
-          <span>Endgame level with difficulty:</span>
+          <span>Endgame levels! Choose your difficulty: </span>
+          <span>{levelDifficulty}</span>
           <button
             className={style.buttonChangeDiff}
             onClick={() => {
@@ -48,7 +50,6 @@ const LevelChoose: React.FC<LevelChooseProps> = ({
           >
             -
           </button>
-          <span>{levelDifficulty}</span>
           <button
             className={style.buttonChangeDiff}
             onClick={() => {

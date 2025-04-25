@@ -44,8 +44,8 @@ export interface CharacterCoords {
 }
 
 export interface OnSurface {
-  onGround: boolean
-  onPlatform: boolean
+  onGround?: boolean
+  onPlatform?: boolean
 }
 
 export interface LevelBoundary {

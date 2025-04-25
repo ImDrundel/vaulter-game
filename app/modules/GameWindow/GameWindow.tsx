@@ -1,12 +1,12 @@
 "use client"
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import style from "./GameWindow.module.scss"
 import levelBoundaryWallJSON from "@/public/levelBoundaryWall.json"
 import level_01 from "@/public/levels/level_01.json"
 import level_02 from "@/public/levels/level_02.json"
 import level_03 from "@/public/levels/level_03.json"
 import { moving } from "./moving"
-import { falling } from "./falling"
+import { Falling } from "./falling"
 import { jump } from "./jump"
 import { generateEndgameLevel } from "./generateEndgame"
 import {
@@ -14,9 +14,10 @@ import {
   CharacterParam,
   PlatformJSON,
   Wall,
-  OnSurface,
+  // OnSurface,
   CharacterCoords,
   LevelBoundary,
+  OnSurface,
 } from "./types"
 import {
   drawCharacter,
@@ -36,6 +37,7 @@ export default function GameWindow() {
   const [finalEndgameLevel, setFinalEndgameLevel] = useState<
     Array<PlatformJSON>
   >([{ x: 680, y: 550, width: 120, height: 32 }])
+
   const memoizedEndgameLevel = useMemo(
     () => finalEndgameLevel,
     [finalEndgameLevel]
@@ -43,9 +45,9 @@ export default function GameWindow() {
   function startEndgameLevel(diff: number) {
     const endgameLevelJSON = generateEndgameLevel(diff)
     setFinalEndgameLevel(JSON.parse(endgameLevelJSON))
+
     //SetCurrentLevel('count of levels') must be increased manually when adding a new level
     //No automation as there are no plans to add more levels
-
     setCurrentLevel(3)
     return finalEndgameLevel
   }
@@ -74,14 +76,22 @@ export default function GameWindow() {
       window.removeEventListener("keydown", keyRUp)
     }
   }, [])
-
+  // const [onPlatform, setOnPlatform] = useState<boolean>(false)
+  // const [onGround, setOnGround] = useState<boolean>(true)
+  // const onSurface = useRef<OnSurface>({
+  //   onPlatform: false,
+  //   onGround: true,
+  // })
+  // const onPlatform = useRef<boolean>(false) as React.MutableRefObject<boolean>
+  // const onGround = useRef<boolean>(true) as React.MutableRefObject<boolean>
+  const frameIdRef = useRef<number | null>(null)
   useEffect(() => {
+    const onSurface: OnSurface = {
+      onGround: true,
+      onPlatform: false,
+    }
     const levelChoose = [level_01, level_02, level_03, memoizedEndgameLevel]
 
-    const onSurface: OnSurface = {
-      onPlatform: false,
-      onGround: true,
-    }
     const canvas = document.getElementById(
       "mainCanvas"
     ) as HTMLCanvasElement | null
@@ -105,7 +115,7 @@ export default function GameWindow() {
 
       const characterParam: CharacterParam = {
         x: canvas.width / 2,
-        y: canvas.height - 110,
+        y: canvas.height - 99,
         width: 37,
         height: 100,
         speed: 400,
@@ -166,6 +176,7 @@ export default function GameWindow() {
       function gameLoop(timestamp: number) {
         const deltaTime = (timestamp - lastFrameRate) / 1000
         lastFrameRate = timestamp
+        // console.log(deltaTime, timestamp)
         ctx!.clearRect(0, 0, canvas!.width, canvas!.height)
 
         drawCharacter(ctx!, characterParam, texture_character)
@@ -184,25 +195,30 @@ export default function GameWindow() {
           characterParam,
           staticPlatforms
         )
-        jump(keysHold, characterParam, onSurface)
-        falling(
+        Falling(
           deltaTime,
           staticPlatforms,
           characterCoords,
           characterParam,
           canvas,
           onSurface
+          // currentLevel
+          // onPlatform,
+          // onGround
         )
+        jump(keysHold, characterParam, onSurface)
+        // onPlatform,
+        // onGround)
+
         updateCharacterCoords()
-        requestAnimationFrame(gameLoop)
-        // console.log("hello")
+        frameIdRef.current = requestAnimationFrame(gameLoop)
+        // console.log(onSurface, currentLevel)
       }
 
       //Main code end
-
       // Context checking
       if (ctx) {
-        requestAnimationFrame(gameLoop)
+        frameIdRef.current = requestAnimationFrame(gameLoop)
         // window.removeEventListener("keydown", jump)
       } else {
         console.error("2D context not available")
@@ -212,10 +228,28 @@ export default function GameWindow() {
     }
     // window.addEventListener("keydown", jump)
     return () => {
+      if (frameIdRef.current !== null) {
+        cancelAnimationFrame(frameIdRef.current)
+      }
+      // console.log("falling удален")
       window.removeEventListener("keydown", keyDown)
       window.removeEventListener("keyup", keyUp)
+      // console.log("---------")
+      // console.log(onSurface, currentLevel)
+      // console.log(keysHold)
+      // console.log("очистка")
       keysHold = {}
+      // delete onSurface.onGround
+      // delete onSurface.onPlatform
+      // onSurface = {}
+      // console.log(onSurface, currentLevel)
+      // console.log(keysHold)
+
+      // onSurface.onGround = true
+      // onSurface.onPlatform = false
+      // onSurface.current = { onPlatform: false, onGround: true }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentLevel, reset, memoizedEndgameLevel])
 
   return (

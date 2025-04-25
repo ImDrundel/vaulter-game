@@ -8,6 +8,8 @@ export function jump(
   },
   characterParam: CharacterParam,
   onSurface: OnSurface
+  // onPlatformRef: boolean,
+  // onGroundRef: boolean
 ) {
   if (
     keysHold["Space"] &&
@@ -16,17 +18,14 @@ export function jump(
     //onSurface.onPlatform & onGround check occurs in the 'falling' function in the 'falling.ts' file
   ) {
     onJump = true
-    console.log("start jump")
     const jumping = setInterval(() => {
       characterParam.gravity = 0
       characterParam.y = characterParam.y - characterParam.jumpHeight
-      console.log("frame")
       characterParam.jumpHeight = characterParam.jumpHeight - 0.3
     }, 20)
     setTimeout(() => {
       clearInterval(jumping)
       characterParam.jumpHeight = 21
-      console.log("finish jump")
       onJump = false
     }, 240)
   }
