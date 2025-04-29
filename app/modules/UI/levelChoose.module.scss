@@ -51,4 +51,38 @@
       border: 1px $color-sub-2 solid;
     }
   }
+
+  .diffTipIcon {
+    position: relative;
+    font-size: 0.8rem;
+    align-content: center;
+    text-align: center;
+    color: orange;
+    margin-left: 15px;
+    width: 20px;
+    height: 20px;
+    border: 1 solid orange;
+    border-radius: 50%;
+    cursor: pointer;
+    .diffTipText {
+      visibility: hidden;
+      position: absolute;
+      width: 300px;
+      font-size: 1rem;
+      border: 1 solid white;
+      padding: 5px;
+      border-radius: 5px;
+      color: white;
+      opacity: 0;
+      transition: opacity 0.3s;
+      left: 150%;
+      bottom: 100%;
+    }
+    &:hover {
+      .diffTipText {
+        visibility: visible;
+        opacity: 1;
+      }
+    }
+  }
 }

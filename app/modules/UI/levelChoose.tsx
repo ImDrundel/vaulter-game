@@ -41,6 +41,7 @@ const LevelChoose: React.FC<LevelChooseProps> = ({
         <div>
           <span>Endgame levels! Choose your difficulty: </span>
           <span>{levelDifficulty}</span>
+
           <button
             className={style.buttonChangeDiff}
             onClick={() => {
@@ -50,6 +51,7 @@ const LevelChoose: React.FC<LevelChooseProps> = ({
           >
             -
           </button>
+
           <button
             className={style.buttonChangeDiff}
             onClick={() => {
@@ -69,6 +71,13 @@ const LevelChoose: React.FC<LevelChooseProps> = ({
         >
           START
         </button>
+        <div className={style.diffTipIcon}>
+          i
+          <span className={style.diffTipText}>
+            Increasing the difficulty increases the distance between platforms
+            and the chance for a rarer reward at the end
+          </span>
+        </div>
       </div>
     </div>
   )
