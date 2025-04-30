@@ -1,5 +1,10 @@
 // import { useState } from "react"
-import { Platform, CharacterCoords, CharacterParam, OnSurface } from "./types"
+import {
+  Platform,
+  CharacterCoords,
+  CharacterParam,
+  OnSurface,
+} from "../../../../types/types"
 
 export function Falling(
   deltaTime: number,

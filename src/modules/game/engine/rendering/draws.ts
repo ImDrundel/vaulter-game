@@ -1,4 +1,4 @@
-import { Platform, CharacterParam, Wall } from "./types"
+import { Platform, CharacterParam, Wall } from "@/src/types/types"
 // import levelBoundaryWall from "@/public/levelBoundaryWall.json"
 
 // const character = new Image()

@@ -1,14 +1,14 @@
 "use client"
 import { useEffect, useMemo, useRef, useState } from "react"
 import style from "./GameWindow.module.scss"
-import levelBoundaryWallJSON from "@/public/levelBoundaryWall.json"
-import level_01 from "@/public/levels/level_01.json"
-import level_02 from "@/public/levels/level_02.json"
-import level_03 from "@/public/levels/level_03.json"
-import { moving } from "./moving"
-import { Falling } from "./falling"
-import { jump } from "./jump"
-import { generateEndgameLevel } from "./generateEndgame"
+import levelBoundaryWallJSON from "@/public/assets/levels/levelBoundaryWall.json"
+import level_01 from "@/public/assets/levels/level_01.json"
+import level_02 from "@/public/assets/levels/level_02.json"
+import level_03 from "@/public/assets/levels/level_03.json"
+import { moving } from "@/src/modules/game/engine/input/moving"
+import { Falling } from "@/src/modules/game/engine/physics/falling"
+import { jump } from "@/src/modules/game/engine/input/jump"
+import { generateEndgameLevel } from "@/src/modules/game/levels/generateEndgame"
 import {
   Platform,
   CharacterParam,
@@ -18,15 +18,15 @@ import {
   CharacterCoords,
   LevelBoundary,
   OnSurface,
-} from "./types"
+} from "@/src/types/types"
 import {
   drawCharacter,
   drawStaticPlatform,
   drawLevelBoundaryWall,
   drawChest,
-} from "./draws"
-import LevelChoose from "../UI/levelChoose"
-import GameInfo from "../InfoBoxes/gameInfo"
+} from "@/src/modules/game/engine/rendering/draws"
+import LevelChoose from "@/src/components/UI/levelChoose"
+import GameInfo from "@/src/components/UI/InfoBoxes/gameInfo"
 
 export default function GameWindow() {
   const [currentLevel, setCurrentLevel] = useState<number>(0)
@@ -165,13 +165,17 @@ export default function GameWindow() {
 
       //images for functions in 'draws.ts'
       const texture_level_bounadry_wall = new Image()
-      texture_level_bounadry_wall.src = "/texture_level_bounadry_wall.jpg"
+      texture_level_bounadry_wall.src =
+        "/assets/images/texture_level_bounadry_wall.jpg"
+
       const texture_platform = new Image()
-      texture_platform.src = "/texture_platform.avif"
+      texture_platform.src = "/assets/images/texture_platform.avif"
+
       const texture_character = new Image()
-      texture_character.src = "/texture_character.png"
+      texture_character.src = "/assets/images/texture_character.png"
+
       const texture_chest = new Image()
-      texture_chest.src = "/texture_chest.png"
+      texture_chest.src = "/assets/images/texture_chest.png"
 
       function gameLoop(timestamp: number) {
         const deltaTime = (timestamp - lastFrameRate) / 1000

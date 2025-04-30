@@ -1,4 +1,4 @@
-import { PlatformJSON } from "./types"
+import { PlatformJSON } from "../../../types/types"
 
 export const generateEndgameLevel = (diff: number) => {
   const endgameLevel: Array<PlatformJSON> = [
