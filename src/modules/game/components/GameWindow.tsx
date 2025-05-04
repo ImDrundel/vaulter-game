@@ -14,7 +14,6 @@ import {
   CharacterParam,
   PlatformJSON,
   Wall,
-  // OnSurface,
   CharacterCoords,
   LevelBoundary,
   OnSurface,
@@ -24,7 +23,8 @@ import {
   drawStaticPlatform,
   drawLevelBoundaryWall,
   drawChest,
-} from "@/src/modules/game/engine/rendering/draws"
+} from "@/src/modules/game/engine/rendering/drawsStatic"
+import { drawLava } from "@/src/modules/game/engine/rendering/drawLavaAnimation"
 import LevelChoose from "@/src/components/UI/levelChoose"
 import GameInfo from "@/src/components/UI/InfoBoxes/gameInfo"
 
@@ -68,7 +68,6 @@ export default function GameWindow() {
         setReset(false)
       }
     }
-
     window.addEventListener("keydown", keyRDown)
     window.addEventListener("keydown", keyRUp)
     return () => {
@@ -76,6 +75,7 @@ export default function GameWindow() {
       window.removeEventListener("keydown", keyRUp)
     }
   }, [])
+
   // const [onPlatform, setOnPlatform] = useState<boolean>(false)
   // const [onGround, setOnGround] = useState<boolean>(true)
   // const onSurface = useRef<OnSurface>({
@@ -85,24 +85,38 @@ export default function GameWindow() {
   // const onPlatform = useRef<boolean>(false) as React.MutableRefObject<boolean>
   // const onGround = useRef<boolean>(true) as React.MutableRefObject<boolean>
   const frameIdRef = useRef<number | null>(null)
+  const blockedKeysRef = useRef<{ [code: string]: boolean }>({})
+
   useEffect(() => {
+    // const resetByLava = new KeyboardEvent("keydown", { key: "r", code: "KeyR" })
     const onSurface: OnSurface = {
-      onGround: true,
+      onGround: false,
       onPlatform: false,
     }
+
     const levelChoose = [level_01, level_02, level_03, memoizedEndgameLevel]
 
     const canvas = document.getElementById(
       "mainCanvas"
     ) as HTMLCanvasElement | null
 
+    function blockOnReset() {
+      blockedKeysRef.current = { ...keysHold }
+      keysHold = {}
+    }
+
     let keysHold: { [code: string]: boolean } = {}
     function keyDown(e: KeyboardEvent) {
+      if (blockedKeysRef.current[e.code]) return
       keysHold[e.code] = true
     }
     function keyUp(e: KeyboardEvent) {
       keysHold[e.code] = false
+      if (blockedKeysRef.current[e.code]) {
+        delete blockedKeysRef.current[e.code]
+      }
     }
+
     window.addEventListener("keydown", keyDown)
     window.addEventListener("keyup", keyUp)
 
@@ -115,7 +129,7 @@ export default function GameWindow() {
 
       const characterParam: CharacterParam = {
         x: canvas.width / 2,
-        y: canvas.height - 99,
+        y: canvas.height - 290,
         width: 37,
         height: 100,
         speed: 400,
@@ -167,19 +181,19 @@ export default function GameWindow() {
       const texture_level_bounadry_wall = new Image()
       texture_level_bounadry_wall.src =
         "/assets/images/texture_level_bounadry_wall.jpg"
-
       const texture_platform = new Image()
       texture_platform.src = "/assets/images/texture_platform.avif"
-
       const texture_character = new Image()
       texture_character.src = "/assets/images/texture_character.png"
-
       const texture_chest = new Image()
       texture_chest.src = "/assets/images/texture_chest.png"
+      let lavaTime = 0
 
       function gameLoop(timestamp: number) {
         const deltaTime = (timestamp - lastFrameRate) / 1000
         lastFrameRate = timestamp
+        lavaTime += deltaTime
+        console.log(lavaTime)
         // console.log(deltaTime, timestamp)
         ctx!.clearRect(0, 0, canvas!.width, canvas!.height)
 
@@ -191,14 +205,10 @@ export default function GameWindow() {
           texture_level_bounadry_wall
         )
         drawChest(staticPlatforms, ctx, texture_chest)
-        moving(
-          deltaTime,
-          levelBoundary,
-          levelBoundaryWall,
-          keysHold,
-          characterParam,
-          staticPlatforms
-        )
+        // drawLavaSecondWave(ctx, canvas, lavaTime)
+        drawLava(ctx, canvas, lavaTime, 0)
+        drawLava(ctx, canvas, lavaTime, 1)
+
         Falling(
           deltaTime,
           staticPlatforms,
@@ -210,11 +220,27 @@ export default function GameWindow() {
           // onPlatform,
           // onGround
         )
+
+        moving(
+          deltaTime,
+          levelBoundary,
+          levelBoundaryWall,
+          keysHold,
+          characterParam,
+          staticPlatforms
+        )
         jump(keysHold, characterParam, onSurface)
         // onPlatform,
         // onGround)
-
+        if (onSurface.onGround == true) {
+          blockOnReset()
+          setReset(true)
+        } else {
+          setReset(false)
+        }
         updateCharacterCoords()
+        // console.log(onSurface.onGround, onSurface.onPlatform)
+        // console.log(keysHold)
         frameIdRef.current = requestAnimationFrame(gameLoop)
         // console.log(onSurface, currentLevel)
       }
@@ -240,7 +266,8 @@ export default function GameWindow() {
       window.removeEventListener("keyup", keyUp)
       // console.log("---------")
       // console.log(onSurface, currentLevel)
-      // console.log(keysHold)
+      console.log(keysHold)
+
       // console.log("очистка")
       keysHold = {}
       // delete onSurface.onGround

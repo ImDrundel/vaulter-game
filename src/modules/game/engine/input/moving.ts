@@ -1,4 +1,4 @@
-import { Platform, CharacterParam, Wall } from "./types"
+import { Platform, CharacterParam, Wall } from "../../../../types/types"
 
 export function moving(
   deltaTime: number,

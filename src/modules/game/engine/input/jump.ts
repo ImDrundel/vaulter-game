@@ -1,4 +1,4 @@
-import { CharacterParam, OnSurface } from "./types"
+import { CharacterParam, OnSurface } from "../../../../types/types"
 
 let onJump = false
 
