@@ -1,8 +1,5 @@
 import { Platform, CharacterParam } from "@/src/types/types"
-// import levelBoundaryWall from "@/public/levelBoundaryWall.json"
 
-// const character = new Image()
-// character.src = "/character.png"
 export function drawCharacter(
   ctx: CanvasRenderingContext2D,
   characterParam: CharacterParam,
@@ -21,8 +18,6 @@ export function drawCharacter(
   )
 }
 
-// const platformSprite = new Image()
-// platformSprite.src = "/rock.avif"
 export function drawStaticPlatform(
   staticPlatforms: Array<Platform>,
   ctx: CanvasRenderingContext2D | null,
@@ -43,30 +38,6 @@ export function drawStaticPlatform(
   })
 }
 
-// const wallSprite = new Image()
-// wallSprite.src = "/castle_wall_texture.jpg"
-// export function drawLevelBoundaryWall(
-//   levelBoundaryWall: Array<Wall>,
-//   ctx: CanvasRenderingContext2D | null,
-//   texture_level_bounadry_wall: HTMLImageElement
-// ) {
-//   levelBoundaryWall.forEach((wall) => {
-//     ctx!.drawImage(
-//       texture_level_bounadry_wall,
-//       0,
-//       0,
-//       wall.width,
-//       wall.height,
-//       wall.x,
-//       wall.y,
-//       wall.width,
-//       wall.height
-//     )
-//   })
-// }
-
-// const chest = new Image()
-// chest.src = "/chest.png"
 export function drawChest(
   staticPlatforms: Array<Platform>,
   ctx: CanvasRenderingContext2D | null,

@@ -1,7 +1,6 @@
 "use client"
 import { useEffect, useMemo, useRef, useState } from "react"
 import style from "./GameWindow.module.scss"
-// import levelBoundaryWallJSON from "@/public/assets/levels/levelBoundaryWall.json"
 import level_01 from "@/public/assets/levels/level_01.json"
 import level_02 from "@/public/assets/levels/level_02.json"
 import level_03 from "@/public/assets/levels/level_03.json"
@@ -13,15 +12,12 @@ import {
   Platform,
   CharacterParam,
   PlatformJSON,
-  // Wall,
   CharacterCoords,
-  // LevelBoundary,
   OnSurface,
 } from "@/src/types/types"
 import {
   drawCharacter,
   drawStaticPlatform,
-  // drawLevelBoundaryWall,
   drawChest,
 } from "@/src/modules/game/engine/rendering/drawsStatic"
 import { drawLava } from "@/src/modules/game/engine/rendering/drawLavaAnimation"
@@ -76,19 +72,10 @@ export default function GameWindow() {
     }
   }, [])
 
-  // const [onPlatform, setOnPlatform] = useState<boolean>(false)
-  // const [onLava, setonLava] = useState<boolean>(true)
-  // const onSurface = useRef<OnSurface>({
-  //   onPlatform: false,
-  //   onLava: true,
-  // })
-  // const onPlatform = useRef<boolean>(false) as React.MutableRefObject<boolean>
-  // const onLava = useRef<boolean>(true) as React.MutableRefObject<boolean>
   const frameIdRef = useRef<number | null>(null)
   const blockedKeysRef = useRef<{ [code: string]: boolean }>({})
 
   useEffect(() => {
-    // const resetByLava = new KeyboardEvent("keydown", { key: "r", code: "KeyR" })
     const onSurface: OnSurface = {
       onLava: false,
       onPlatform: false,
@@ -122,7 +109,6 @@ export default function GameWindow() {
 
     if (canvas) {
       let lastFrameRate: number = 0
-
       const ctx: CanvasRenderingContext2D | null = canvas.getContext("2d")
       canvas.height = canvas.clientHeight
       canvas.width = canvas.clientWidth
@@ -150,19 +136,6 @@ export default function GameWindow() {
         characterCoords.bottom = characterParam.y + characterParam.height
       }
 
-      // Only one wall remains in the development process. I saved the structure in case other walls are added in the future
-      // const levelBoundaryWall: Array<Wall> = levelBoundaryWallJSON.map(
-      //   (object) => {
-      //     return {
-      //       ...object,
-      //     }
-      //   }
-      // )
-      // const levelBoundary: LevelBoundary = {
-      //   leftBorder: levelBoundaryWall[0].rightBorder,
-      //   // rightBorder: levelBoundaryWall[1].leftBorder,
-      // }
-
       const blankStaticPlatforms: Array<PlatformJSON> =
         levelChoose[currentLevel]
 
@@ -177,10 +150,6 @@ export default function GameWindow() {
         }
       )
 
-      //images for functions in 'draws.ts'
-      // const texture_level_bounadry_wall = new Image()
-      // texture_level_bounadry_wall.src =
-      //   "/assets/images/texture_level_bounadry_wall.jpg"
       const texture_platform = new Image()
       texture_platform.src = "/assets/images/texture_platform.avif"
       const texture_character = new Image()
@@ -193,19 +162,12 @@ export default function GameWindow() {
         const deltaTime = (timestamp - lastFrameRate) / 1000
         lastFrameRate = timestamp
         lavaTime += deltaTime
-        // console.log(lavaTime)
-        // console.log(deltaTime, timestamp)
+        // console.log(deltaTime, timestamp, lavaTime)
         ctx!.clearRect(0, 0, canvas!.width, canvas!.height)
 
         drawCharacter(ctx!, characterParam, texture_character)
         drawStaticPlatform(staticPlatforms, ctx, texture_platform)
-        // drawLevelBoundaryWall(
-        //   levelBoundaryWall,
-        //   ctx,
-        //   texture_level_bounadry_wall
-        // )
         drawChest(staticPlatforms, ctx, texture_chest)
-        // drawLavaSecondWave(ctx, canvas, lavaTime)
         drawLava(ctx, canvas, lavaTime, 0)
         drawLava(ctx, canvas, lavaTime, 1)
 
@@ -216,22 +178,12 @@ export default function GameWindow() {
           characterParam,
           canvas,
           onSurface
-          // currentLevel
-          // onPlatform,
-          // onLava
         )
 
-        moving(
-          deltaTime,
-          // levelBoundary,
-          // levelBoundaryWall,
-          keysHold,
-          characterParam,
-          staticPlatforms
-        )
+        moving(deltaTime, keysHold, characterParam, staticPlatforms)
         jump(keysHold, characterParam, onSurface)
-        // onPlatform,
-        // onLava)
+
+        //The block to continue movement after death was added because there is an unclear problem if the character will immediately fall into the lava from the start when the movement buttons are pressed.
         if (onSurface.onLava == true) {
           blockOnReset()
           setReset(true)
@@ -239,46 +191,25 @@ export default function GameWindow() {
           setReset(false)
         }
         updateCharacterCoords()
-        // console.log(onSurface.onLava, onSurface.onPlatform)
-        // console.log(keysHold)
         frameIdRef.current = requestAnimationFrame(gameLoop)
-        // console.log(onSurface, currentLevel)
+        // console.log()
       }
 
-      //Main code end
-      // Context checking
       if (ctx) {
         frameIdRef.current = requestAnimationFrame(gameLoop)
-        // window.removeEventListener("keydown", jump)
       } else {
         console.error("2D context not available")
       }
     } else {
       console.error("Canvas element not found...")
     }
-    // window.addEventListener("keydown", jump)
     return () => {
       if (frameIdRef.current !== null) {
         cancelAnimationFrame(frameIdRef.current)
       }
-      // console.log("falling удален")
       window.removeEventListener("keydown", keyDown)
       window.removeEventListener("keyup", keyUp)
-      // console.log("---------")
-      // console.log(onSurface, currentLevel)
-      // console.log(keysHold)
-
-      // console.log("очистка")
       keysHold = {}
-      // delete onSurface.onLava
-      // delete onSurface.onPlatform
-      // onSurface = {}
-      // console.log(onSurface, currentLevel)
-      // console.log(keysHold)
-
-      // onSurface.onLava = true
-      // onSurface.onPlatform = false
-      // onSurface.current = { onPlatform: false, onLava: true }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentLevel, reset, memoizedEndgameLevel])
@@ -289,7 +220,6 @@ export default function GameWindow() {
         changeLevel={changeLevel}
         startEndgameLevel={startEndgameLevel}
       />
-
       <canvas id="mainCanvas" className={style.canvasBox}></canvas>
       <GameInfo />
     </div>

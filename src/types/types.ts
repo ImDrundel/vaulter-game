@@ -8,16 +8,6 @@ export interface Platform {
   topBorder: number
 }
 
-// export interface Wall {
-//   x: number
-//   y: number
-//   width: number
-//   height: number
-//   leftBorder: number
-//   rightBorder: number
-//   topBorder: number
-// }
-
 export interface CharacterParam {
   x: number
   y: number
@@ -46,9 +36,4 @@ export interface CharacterCoords {
 export interface OnSurface {
   onLava?: boolean
   onPlatform?: boolean
-}
-
-export interface LevelBoundary {
-  leftBorder: number
-  // rightBorder: number
 }
