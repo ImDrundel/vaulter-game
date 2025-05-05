@@ -15,11 +15,11 @@ export function Falling(
   onSurface: OnSurface
   // currentLevel: number
   // onPlatformRef: React.MutableRefObject<boolean>,
-  // onGroundRef: React.MutableRefObject<boolean>
+  // onLavaRef: React.MutableRefObject<boolean>
 ) {
   // console.log("falling запущен")
   // let onPlatform: boolean = false
-  // let onGround: boolean = true
+  // let onLava: boolean = true
 
   // falling + "onPlatform" check
 
@@ -53,17 +53,17 @@ export function Falling(
     characterParam.y = Math.round(
       characterParam.y + characterParam.gravity * deltaTime
     )
-    // onGroundRef.current = false
-    onSurface.onGround = false
-    // setOnGround(false)
+    // onLavaRef.current = false
+    onSurface.onLava = false
+    // setonLava(false)
   } else {
-    // onGroundRef.current = true
-    onSurface.onGround = true
-    // setOnGround(true)
+    // onLavaRef.current = true
+    onSurface.onLava = true
+    // setonLava(true)
   }
 
-  // if (!onPlatformRef.current || !onGroundRef.current) {
-  if (!onSurface.onPlatform || !onSurface.onGround) {
+  // if (!onPlatformRef.current || !onLavaRef.current) {
+  if (!onSurface.onPlatform || !onSurface.onLava) {
     characterParam.gravity = 500
   }
 

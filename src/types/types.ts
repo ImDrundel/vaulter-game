@@ -8,15 +8,15 @@ export interface Platform {
   topBorder: number
 }
 
-export interface Wall {
-  x: number
-  y: number
-  width: number
-  height: number
-  leftBorder: number
-  rightBorder: number
-  topBorder: number
-}
+// export interface Wall {
+//   x: number
+//   y: number
+//   width: number
+//   height: number
+//   leftBorder: number
+//   rightBorder: number
+//   topBorder: number
+// }
 
 export interface CharacterParam {
   x: number
@@ -44,7 +44,7 @@ export interface CharacterCoords {
 }
 
 export interface OnSurface {
-  onGround?: boolean
+  onLava?: boolean
   onPlatform?: boolean
 }
 

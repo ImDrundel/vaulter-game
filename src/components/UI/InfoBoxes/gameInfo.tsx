@@ -49,6 +49,7 @@ export default function GameInfo() {
           src={rule_icon}
           width={70}
           height={80}
+          style={{ opacity: 0.8 }}
           alt="rule icon"
         />
       </div>
@@ -69,6 +70,7 @@ export default function GameInfo() {
           src={info_icon}
           width={70}
           height={70}
+          style={{ opacity: 0.8 }}
           alt="info icon"
         />
       </div>

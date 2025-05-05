@@ -4,4 +4,9 @@
 body {
   background-color: $color-main;
   color: $color-text;
+
+  background-image: url("/assets/images/texture_body_background.png");
+  // background-image: linear-gradient(black, white);
+
+  background-size: 20%;
 }

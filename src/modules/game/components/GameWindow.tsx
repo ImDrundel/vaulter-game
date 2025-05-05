@@ -1,7 +1,7 @@
 "use client"
 import { useEffect, useMemo, useRef, useState } from "react"
 import style from "./GameWindow.module.scss"
-import levelBoundaryWallJSON from "@/public/assets/levels/levelBoundaryWall.json"
+// import levelBoundaryWallJSON from "@/public/assets/levels/levelBoundaryWall.json"
 import level_01 from "@/public/assets/levels/level_01.json"
 import level_02 from "@/public/assets/levels/level_02.json"
 import level_03 from "@/public/assets/levels/level_03.json"
@@ -13,15 +13,15 @@ import {
   Platform,
   CharacterParam,
   PlatformJSON,
-  Wall,
+  // Wall,
   CharacterCoords,
-  LevelBoundary,
+  // LevelBoundary,
   OnSurface,
 } from "@/src/types/types"
 import {
   drawCharacter,
   drawStaticPlatform,
-  drawLevelBoundaryWall,
+  // drawLevelBoundaryWall,
   drawChest,
 } from "@/src/modules/game/engine/rendering/drawsStatic"
 import { drawLava } from "@/src/modules/game/engine/rendering/drawLavaAnimation"
@@ -77,20 +77,20 @@ export default function GameWindow() {
   }, [])
 
   // const [onPlatform, setOnPlatform] = useState<boolean>(false)
-  // const [onGround, setOnGround] = useState<boolean>(true)
+  // const [onLava, setonLava] = useState<boolean>(true)
   // const onSurface = useRef<OnSurface>({
   //   onPlatform: false,
-  //   onGround: true,
+  //   onLava: true,
   // })
   // const onPlatform = useRef<boolean>(false) as React.MutableRefObject<boolean>
-  // const onGround = useRef<boolean>(true) as React.MutableRefObject<boolean>
+  // const onLava = useRef<boolean>(true) as React.MutableRefObject<boolean>
   const frameIdRef = useRef<number | null>(null)
   const blockedKeysRef = useRef<{ [code: string]: boolean }>({})
 
   useEffect(() => {
     // const resetByLava = new KeyboardEvent("keydown", { key: "r", code: "KeyR" })
     const onSurface: OnSurface = {
-      onGround: false,
+      onLava: false,
       onPlatform: false,
     }
 
@@ -151,17 +151,17 @@ export default function GameWindow() {
       }
 
       // Only one wall remains in the development process. I saved the structure in case other walls are added in the future
-      const levelBoundaryWall: Array<Wall> = levelBoundaryWallJSON.map(
-        (object) => {
-          return {
-            ...object,
-          }
-        }
-      )
-      const levelBoundary: LevelBoundary = {
-        leftBorder: levelBoundaryWall[0].rightBorder,
-        // rightBorder: levelBoundaryWall[1].leftBorder,
-      }
+      // const levelBoundaryWall: Array<Wall> = levelBoundaryWallJSON.map(
+      //   (object) => {
+      //     return {
+      //       ...object,
+      //     }
+      //   }
+      // )
+      // const levelBoundary: LevelBoundary = {
+      //   leftBorder: levelBoundaryWall[0].rightBorder,
+      //   // rightBorder: levelBoundaryWall[1].leftBorder,
+      // }
 
       const blankStaticPlatforms: Array<PlatformJSON> =
         levelChoose[currentLevel]
@@ -178,9 +178,9 @@ export default function GameWindow() {
       )
 
       //images for functions in 'draws.ts'
-      const texture_level_bounadry_wall = new Image()
-      texture_level_bounadry_wall.src =
-        "/assets/images/texture_level_bounadry_wall.jpg"
+      // const texture_level_bounadry_wall = new Image()
+      // texture_level_bounadry_wall.src =
+      //   "/assets/images/texture_level_bounadry_wall.jpg"
       const texture_platform = new Image()
       texture_platform.src = "/assets/images/texture_platform.avif"
       const texture_character = new Image()
@@ -193,17 +193,17 @@ export default function GameWindow() {
         const deltaTime = (timestamp - lastFrameRate) / 1000
         lastFrameRate = timestamp
         lavaTime += deltaTime
-        console.log(lavaTime)
+        // console.log(lavaTime)
         // console.log(deltaTime, timestamp)
         ctx!.clearRect(0, 0, canvas!.width, canvas!.height)
 
         drawCharacter(ctx!, characterParam, texture_character)
         drawStaticPlatform(staticPlatforms, ctx, texture_platform)
-        drawLevelBoundaryWall(
-          levelBoundaryWall,
-          ctx,
-          texture_level_bounadry_wall
-        )
+        // drawLevelBoundaryWall(
+        //   levelBoundaryWall,
+        //   ctx,
+        //   texture_level_bounadry_wall
+        // )
         drawChest(staticPlatforms, ctx, texture_chest)
         // drawLavaSecondWave(ctx, canvas, lavaTime)
         drawLava(ctx, canvas, lavaTime, 0)
@@ -218,28 +218,28 @@ export default function GameWindow() {
           onSurface
           // currentLevel
           // onPlatform,
-          // onGround
+          // onLava
         )
 
         moving(
           deltaTime,
-          levelBoundary,
-          levelBoundaryWall,
+          // levelBoundary,
+          // levelBoundaryWall,
           keysHold,
           characterParam,
           staticPlatforms
         )
         jump(keysHold, characterParam, onSurface)
         // onPlatform,
-        // onGround)
-        if (onSurface.onGround == true) {
+        // onLava)
+        if (onSurface.onLava == true) {
           blockOnReset()
           setReset(true)
         } else {
           setReset(false)
         }
         updateCharacterCoords()
-        // console.log(onSurface.onGround, onSurface.onPlatform)
+        // console.log(onSurface.onLava, onSurface.onPlatform)
         // console.log(keysHold)
         frameIdRef.current = requestAnimationFrame(gameLoop)
         // console.log(onSurface, currentLevel)
@@ -266,19 +266,19 @@ export default function GameWindow() {
       window.removeEventListener("keyup", keyUp)
       // console.log("---------")
       // console.log(onSurface, currentLevel)
-      console.log(keysHold)
+      // console.log(keysHold)
 
       // console.log("очистка")
       keysHold = {}
-      // delete onSurface.onGround
+      // delete onSurface.onLava
       // delete onSurface.onPlatform
       // onSurface = {}
       // console.log(onSurface, currentLevel)
       // console.log(keysHold)
 
-      // onSurface.onGround = true
+      // onSurface.onLava = true
       // onSurface.onPlatform = false
-      // onSurface.current = { onPlatform: false, onGround: true }
+      // onSurface.current = { onPlatform: false, onLava: true }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentLevel, reset, memoizedEndgameLevel])

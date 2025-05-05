@@ -72,7 +72,7 @@ const LevelChoose: React.FC<LevelChooseProps> = ({
           START
         </button>
         <div className={style.diffTipIcon}>
-          i
+          ?
           <span className={style.diffTipText}>
             Increasing the difficulty increases the distance between platforms
             and the chance for a rarer reward at the end

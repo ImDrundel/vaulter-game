@@ -9,13 +9,14 @@ export function jump(
   characterParam: CharacterParam,
   onSurface: OnSurface
   // onPlatformRef: boolean,
-  // onGroundRef: boolean
+  // onLavaRef: boolean
 ) {
   if (
     keysHold["Space"] &&
-    (onSurface.onPlatform == true || onSurface.onGround == true) &&
+    onSurface.onPlatform == true &&
+    //  || onSurface.onLava == true) &&
     onJump == false
-    //onSurface.onPlatform & onGround check occurs in the 'falling' function in the 'falling.ts' file
+    //onSurface.onPlatform & onLava check occurs in the 'falling' function in the 'falling.ts' file
   ) {
     onJump = true
     const jumping = setInterval(() => {
