@@ -8,16 +8,16 @@ export function moving(
 ) {
   if (keysHold["KeyA"]) {
     staticPlatforms.map((platform: Platform) => {
-      platform.x += characterParam.speed * deltaTime
-      platform.leftBorder += characterParam.speed * deltaTime
-      platform.rightBorder += characterParam.speed * deltaTime
+      platform.x += characterParam.speed * deltaTime * 4
+      platform.leftBorder += characterParam.speed * deltaTime * 4
+      platform.rightBorder += characterParam.speed * deltaTime * 4
     })
   }
   if (keysHold["KeyD"]) {
     staticPlatforms.map((platform: Platform) => {
-      platform.x -= characterParam.speed * deltaTime
-      platform.leftBorder -= characterParam.speed * deltaTime
-      platform.rightBorder -= characterParam.speed * deltaTime
+      platform.x -= characterParam.speed * deltaTime * 4
+      platform.leftBorder -= characterParam.speed * deltaTime * 4
+      platform.rightBorder -= characterParam.speed * deltaTime * 4
     })
   }
 }

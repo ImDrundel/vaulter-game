@@ -1,0 +1,42 @@
+[
+  {
+    "type": "Artifact of Dexterity",
+    "id": "light_feather",
+    "name": "Light Feather",
+    "quality": "common",
+    "speed": 5,
+    "jumpHeight": 1
+  },
+  {
+    "type": "Artifact of Dexterity",
+    "id": "runner_token",
+    "name": "Runner Token",
+    "quality": "uncommon",
+    "speed": 8,
+    "jumpHeight": 2
+  },
+  {
+    "type": "Artifact of Dexterity",
+    "id": "shadow_amulet",
+    "name": "Shadow Amulet",
+    "quality": "rare",
+    "speed": 12,
+    "jumpHeight": 3
+  },
+  {
+    "type": "Artifact of Dexterity",
+    "id": "cyclone_token",
+    "name": "Cyclone Token",
+    "quality": "epic",
+    "speed": 18,
+    "jumpHeight": 5
+  },
+  {
+    "type": "Artifact of Dexterity",
+    "id": "stormweaver_fang",
+    "name": "Stormweaver Fang",
+    "quality": "legendary",
+    "speed": 25,
+    "jumpHeight": 8
+  }
+]

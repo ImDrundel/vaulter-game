@@ -8,6 +8,19 @@ export interface Platform {
   topBorder: number
 }
 
+export interface characterPermanentParam {
+  x: number
+  y: number
+  width: number
+  height: number
+  gravity: number
+}
+
+export interface characterModifiableParam {
+  speed: number
+  jumpHeight: number
+}
+
 export interface CharacterParam {
   x: number
   y: number
@@ -16,7 +29,6 @@ export interface CharacterParam {
   speed: number
   gravity: number
   jumpHeight: number
-  jumpSpeed: number
 }
 
 export interface PlatformJSON {
@@ -36,4 +48,40 @@ export interface CharacterCoords {
 export interface OnSurface {
   onLava?: boolean
   onPlatform?: boolean
+}
+
+export interface TrialsData {
+  type: string
+  isTrialComplete: boolean
+  equippedArtId: string
+  name: string
+  quality: string
+}
+
+export interface Inventory {
+  type: string
+  id: string
+  name: string
+  quality: string
+  quantity: number
+}
+
+export interface LocalPlayerData {
+  nickname: string
+  flatSpeedFromArts: number
+  flatJumpHeightFromArts: number
+  multiplierSpeedFromArts: number
+  multiplierJumpHeightFromArts: number
+  trials: TrialsData[]
+  inventory: Inventory[]
+}
+
+export interface Artifact {
+  type: string
+  id: string
+  name: string
+  quality: string
+  speed?: number
+  jumpHeight?: number
+  luck?: number
 }

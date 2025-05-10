@@ -38,6 +38,6 @@ export function Falling(
     onSurface.onLava = true
   }
   if (!onSurface.onPlatform || !onSurface.onLava) {
-    characterParam.gravity = 500
+    characterParam.gravity = 500 //real gravity
   }
 }

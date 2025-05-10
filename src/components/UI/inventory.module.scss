@@ -1,0 +1,89 @@
+.container {
+  //   background-color: rgb(19, 19, 19);
+  grid-area: inventory;
+  //   border: 1px solid white;
+  border-radius: 5px;
+  //   height: max-content;
+
+  .inventoryHeader {
+    text-align: center;
+    font-size: 1.3rem;
+    margin: 5px 0 10px 0;
+  }
+
+  .itemSlot {
+    display: grid;
+    // height: 56px;
+    background-color: #110f13;
+
+    border: 1px solid rgb(112, 95, 95);
+    border-radius: 5px;
+    margin: 10px 5px 5px 5px;
+    padding: 5px;
+    letter-spacing: 2;
+
+    grid-template-columns: 66px 1fr;
+    grid-template-rows: 30px 66px;
+    grid-template-areas:
+      "itemType itemType"
+      "itemImage dropList";
+    .itemType {
+      grid-area: itemType;
+      padding-left: 20px;
+    }
+    .itemImage {
+      grid-area: itemImage;
+      height: 64px;
+      width: 64px;
+      border-radius: 5px;
+      &.customFrame {
+        &.common {
+          border: 3px solid white;
+        }
+        &.uncommon {
+          border: 3px solid green;
+        }
+        &.rare {
+          border: 3px solid blue;
+        }
+        &.epic {
+          border: 3px solid purple;
+        }
+        &.legendary {
+          border: 3px solid red;
+        }
+        &.none {
+          border: 2px solid gray;
+        }
+      }
+    }
+
+    .itemDropList {
+      border: 1px solid rgb(248, 182, 182);
+      margin: 1px 1px 1px 5px;
+      padding: 5px;
+      grid-area: dropList;
+      cursor: pointer;
+      .itemName {
+        letter-spacing: 2;
+        font-style: oblique;
+      }
+      // .itemStats {
+      // }
+    }
+  }
+  .characterStatsBox {
+    font-size: 1.2rem;
+    justify-self: center;
+    margin-top: 30px;
+    border: 1px white dashed;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: #110f13;
+  }
+  .characterStatsHeader {
+    justify-self: center;
+    margin-bottom: 20px;
+    letter-spacing: 1;
+  }
+}

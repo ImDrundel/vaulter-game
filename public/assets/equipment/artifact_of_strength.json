@@ -1,0 +1,42 @@
+[
+  {
+    "type": "Artifact of Strenght",
+    "id": "cracked_idol",
+    "name": "Cracked Idol",
+    "quality": "common",
+    "speed": 1,
+    "jumpHeight": 5
+  },
+  {
+    "type": "Artifact of Strenght",
+    "id": "iron_mark",
+    "name": "Iron Mark",
+    "quality": "uncommon",
+    "speed": 2,
+    "jumpHeight": 8
+  },
+  {
+    "type": "Artifact of Strenght",
+    "id": "spirit_emblem",
+    "name": "Spirit Emblem",
+    "quality": "rare",
+    "speed": 3,
+    "jumpHeight": 12
+  },
+  {
+    "type": "Artifact of Strenght",
+    "id": "titan_core",
+    "name": "Titan Core",
+    "quality": "epic",
+    "speed": 5,
+    "jumpHeight": 18
+  },
+  {
+    "type": "Artifact of Strenght",
+    "id": "bloodforged_icon",
+    "name": "Bloodforged Icon",
+    "quality": "legendary",
+    "speed": 8,
+    "jumpHeight": 25
+  }
+]

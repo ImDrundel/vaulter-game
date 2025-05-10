@@ -1,0 +1,37 @@
+[
+  {
+    "type": "Artifact of Luck",
+    "id": "chipped_coin",
+    "name": "Chipped Coin",
+    "quality": "common",
+    "luck": 5
+  },
+  {
+    "type": "Artifact of Luck",
+    "id": "silver_dice",
+    "name": "Silver Dice",
+    "quality": "uncommon",
+    "luck": 8
+  },
+  {
+    "type": "Artifact of Luck",
+    "id": "smiling_eye",
+    "name": "Smiling Eye",
+    "quality": "rare",
+    "luck": 12
+  },
+  {
+    "type": "Artifact of Luck",
+    "id": "luckweaver_ring",
+    "name": "Luckweaver Ring",
+    "quality": "epic",
+    "luck": 18
+  },
+  {
+    "type": "Artifact of Luck",
+    "id": "hand_of_fate",
+    "name": "Hand of Fate",
+    "quality": "legendary",
+    "luck": 25
+  }
+]

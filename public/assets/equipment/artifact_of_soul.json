@@ -1,0 +1,42 @@
+[
+  {
+    "type": "Artifact of Soul",
+    "id": "soul_dust",
+    "name": "Soul Dust",
+    "quality": "common",
+    "speed": 5,
+    "jumpHeight": 5
+  },
+  {
+    "type": "Artifact of Soul",
+    "id": "dream_knot",
+    "name": "Dream Knot",
+    "quality": "uncommon",
+    "speed": 8,
+    "jumpHeight": 8
+  },
+  {
+    "type": "Artifact of Soul",
+    "id": "twilight_core",
+    "name": "Twilight Core",
+    "quality": "rare",
+    "speed": 12,
+    "jumpHeight": 12
+  },
+  {
+    "type": "Artifact of Soul",
+    "id": "phantom_flame",
+    "name": "Phantom Flame",
+    "quality": "epic",
+    "speed": 18,
+    "jumpHeight": 18
+  },
+  {
+    "type": "Artifact of Soul",
+    "id": "eternal_fragment",
+    "name": "Eternal Fragment",
+    "quality": "legendary",
+    "speed": 25,
+    "jumpHeight": 25
+  }
+]

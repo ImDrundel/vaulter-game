@@ -11,14 +11,15 @@ export function jump(
 ) {
   if (keysHold["Space"] && onSurface.onPlatform == true && onJump == false) {
     onJump = true
+    let currentJumpHeight = characterParam.jumpHeight / 4.8
     const jumping = setInterval(() => {
       characterParam.gravity = 0
-      characterParam.y = characterParam.y - characterParam.jumpHeight
-      characterParam.jumpHeight = characterParam.jumpHeight - 0.3
+      characterParam.y = characterParam.y - currentJumpHeight
+      currentJumpHeight = currentJumpHeight - 0.5
     }, 20)
     setTimeout(() => {
       clearInterval(jumping)
-      characterParam.jumpHeight = 21
+      currentJumpHeight = characterParam.jumpHeight
       onJump = false
     }, 240)
   }

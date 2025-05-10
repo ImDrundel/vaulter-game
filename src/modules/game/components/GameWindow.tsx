@@ -14,6 +14,9 @@ import {
   PlatformJSON,
   CharacterCoords,
   OnSurface,
+  characterPermanentParam,
+  characterModifiableParam,
+  LocalPlayerData,
 } from "@/src/types/types"
 import {
   drawCharacter,
@@ -23,8 +26,12 @@ import {
 import { drawLava } from "@/src/modules/game/engine/rendering/drawLavaAnimation"
 import LevelChoose from "@/src/components/UI/levelChoose"
 import GameInfo from "@/src/components/UI/InfoBoxes/gameInfo"
+import playerPersonalInfo from "@/src/modules/game/playerPersonalInfo/playerPersonalInfo.json"
+import Inventory from "@/src/components/UI/inventory"
 
 export default function GameWindow() {
+  const temporaryPersonalInfo: LocalPlayerData = playerPersonalInfo[0]
+
   const [currentLevel, setCurrentLevel] = useState<number>(0)
   function changeLevel(level: number) {
     setCurrentLevel(level)
@@ -113,16 +120,30 @@ export default function GameWindow() {
       canvas.height = canvas.clientHeight
       canvas.width = canvas.clientWidth
 
-      const characterParam: CharacterParam = {
+      // character parameters are located here because they are bound to the canvas element.
+      const characterPermanentParam: characterPermanentParam = {
         x: canvas.width / 2,
         y: canvas.height - 290,
         width: 37,
         height: 100,
-        speed: 400,
-        gravity: 0,
-        jumpHeight: 21,
-        jumpSpeed: 100,
+        gravity: 0, //real gravity 500 (sets in falling.ts)
       }
+      const characterBaseModifiableParam: characterModifiableParam = {
+        speed: 100,
+        jumpHeight: 100,
+      }
+
+      const characterParam: CharacterParam = {
+        x: characterPermanentParam.x,
+        y: characterPermanentParam.y,
+        width: characterPermanentParam.width,
+        height: characterPermanentParam.height,
+        gravity: characterPermanentParam.gravity,
+
+        speed: characterBaseModifiableParam.speed,
+        jumpHeight: characterBaseModifiableParam.jumpHeight,
+      }
+
       const characterCoords: CharacterCoords = {
         left: characterParam.x,
         right: characterParam.x + characterParam.width,
@@ -149,7 +170,6 @@ export default function GameWindow() {
           }
         }
       )
-
       const texture_platform = new Image()
       texture_platform.src = "/assets/images/texture_platform.avif"
       const texture_character = new Image()
@@ -220,6 +240,7 @@ export default function GameWindow() {
         changeLevel={changeLevel}
         startEndgameLevel={startEndgameLevel}
       />
+      <Inventory temporaryPersonalInfo={temporaryPersonalInfo} />
       <canvas id="mainCanvas" className={style.canvasBox}></canvas>
       <GameInfo />
     </div>

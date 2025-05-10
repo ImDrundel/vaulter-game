@@ -1,0 +1,56 @@
+[
+  {
+    "nickname": "Mark",
+    "flatSpeedFromArts": 2,
+    "flatJumpHeightFromArts": 10,
+    "multiplierSpeedFromArts": 8,
+    "multiplierJumpHeightFromArts": 8,
+
+    "trials": [
+      {
+        "type": "Artifact of Strenght",
+        "isTrialComplete": true,
+        "equippedArtId": "light_feather",
+        "name": "none",
+        "quality": "common"
+      },
+      {
+        "type": "Artifact of Dexterity",
+        "isTrialComplete": true,
+        "equippedArtId": "runner_token",
+        "name": "none",
+        "quality": "uncommon"
+      },
+      {
+        "type": "Artifact of Soul",
+        "isTrialComplete": true,
+        "equippedArtId": "shadow_amulet",
+        "name": "Dream Knot",
+        "quality": "rare"
+      },
+      {
+        "type": "Artifact of Luck",
+        "isTrialComplete": true,
+        "equippedArtId": "stormweaver_fang",
+        "name": "none",
+        "quality": "legendary"
+      }
+    ],
+    "inventory": [
+      {
+        "type": "Artifact of Soul",
+        "id": "dream_knot",
+        "name": "Dream Knot",
+        "quality": "uncommon",
+        "quantity": 2
+      },
+      {
+        "type": "Artifact of Strenght",
+        "id": "spirit_emblem",
+        "name": "Spirit Emblem",
+        "quality": "rare",
+        "quantity": 1
+      }
+    ]
+  }
+]
