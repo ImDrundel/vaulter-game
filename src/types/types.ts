@@ -52,6 +52,7 @@ export interface OnSurface {
 
 export interface TrialsData {
   type: string
+  typeID: string
   isTrialComplete: boolean
   equippedArtId: string
   name: string
@@ -60,10 +61,14 @@ export interface TrialsData {
 
 export interface Inventory {
   type: string
+  typeID: string
   id: string
   name: string
   quality: string
   quantity: number
+  speed?: number
+  jumpHeight?: number
+  luck?: number
 }
 
 export interface LocalPlayerData {
@@ -72,6 +77,7 @@ export interface LocalPlayerData {
   flatJumpHeightFromArts: number
   multiplierSpeedFromArts: number
   multiplierJumpHeightFromArts: number
+  flatLuckFromArts: number
   trials: TrialsData[]
   inventory: Inventory[]
 }

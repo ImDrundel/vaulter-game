@@ -1,78 +1,121 @@
 import { LocalPlayerData } from "@/src/types/types"
-// import artifact_of_dexterity from "@/public/assets/equipment/artifact_of_dexterity.json"
-// import artifact_of_soul from "@/public/assets/equipment/artifact_of_dexterity.json"
-import artifact_of_strength from "@/public/assets/equipment/artifact_of_dexterity.json"
-// import playerData from "@/src/modules/game/playerPersonalInfo/playerPersonalInfo.json"
-// import god_fragment from "@/public/assets/equipment/god_fragment.json"
+import artifact_of_strength from "@/public/assets/equipment/artifact_of_strength.json"
+import artifact_of_dexterity from "@/public/assets/equipment/artifact_of_dexterity.json"
+import artifact_of_soul from "@/public/assets/equipment/artifact_of_soul.json"
+import artifact_of_luck from "@/public/assets/equipment/artifact_of_luck.json"
 
-// export function equipStrArt( artIndex: number) {
-//   if (playerData[0].isStrTrialComplete) {
-//     if (playerData[0].equippedStrArt == "none") {
-//       playerData[0].flatSpeedFromArts =
-//         playerData[0].flatSpeedFromArts + artifact_of_strength[artIndex].speed
+const artList = {
+  strArt: artifact_of_strength,
+  dexArt: artifact_of_dexterity,
+  soulArt: artifact_of_soul,
+  luckArt: artifact_of_luck,
+}
+type ArtifactType = "strArt" | "dexArt" | "soulArt" | "luckArt"
 
-//       playerData[0].flatJumpHeightFromArts =
-//         playerData[0].flatJumpHeightFromArts +
-//         artifact_of_strength[artIndex].jumpHeight
-//     } else {
-//       const prevArtStat: { speed: number; jumpHeight: number } = {
-//         speed: 0,
-//         jumpHeight: 0,
-//       }
-
-//       artifact_of_strength.forEach((art) => {
-//         if (art.name == playerData[0].equippedStrArt) {
-//           prevArtStat.speed = art.speed
-//           prevArtStat.jumpHeight = art.jumpHeight
-//         }
-//       })
-
-//       playerData[0].flatSpeedFromArts =
-//         playerData[0].flatSpeedFromArts -
-//         prevArtStat.speed +
-//         artifact_of_strength[artIndex].speed
-
-//       playerData[0].flatJumpHeightFromArts =
-//         playerData[0].flatJumpHeightFromArts -
-//         prevArtStat.jumpHeight +
-//         artifact_of_strength[artIndex].jumpHeight
-//     }
-//   }
-// }
-export function equipStrArt(
-  localPlayerData: LocalPlayerData,
-  artIndex: number
+export function equippingStrArt(
+  currentPlayerData: LocalPlayerData,
+  typeID: string,
+  id: string
 ) {
-  if (localPlayerData.trials[0].isTrialComplete) {
-    if (localPlayerData.trials[0].equippedArtId == "none") {
-      localPlayerData.flatSpeedFromArts =
-        localPlayerData.flatSpeedFromArts + artifact_of_strength[artIndex].speed
+  const type: ArtifactType = typeID as ArtifactType
+  const currentArtType = artList[type]
 
-      localPlayerData.flatJumpHeightFromArts =
-        localPlayerData.flatJumpHeightFromArts +
-        artifact_of_strength[artIndex].jumpHeight
-    } else {
-      const prevArtStat: { speed: number; jumpHeight: number } = {
+  const typeDict = {
+    strArt: 0,
+    dexArt: 1,
+    soulArt: 2,
+    luckArt: 3,
+  }
+  const typeIndex = typeDict[type]
+
+  const currentArt = JSON.parse(
+    JSON.stringify(
+      currentArtType.find((item) => item.id === id) || {
+        type: "none",
+        id: "none",
+        name: "none",
+        quality: "none",
+        luck: 0,
         speed: 0,
         jumpHeight: 0,
       }
+    )
+  )
 
-      artifact_of_strength.forEach((art) => {
-        if (art.name == localPlayerData.trials[0].equippedArtId) {
-          prevArtStat.speed = art.speed
-          prevArtStat.jumpHeight = art.jumpHeight
-        }
-      })
+  const newPlayerData = JSON.parse(JSON.stringify(currentPlayerData))
 
-      localPlayerData.flatSpeedFromArts =
-        localPlayerData.flatSpeedFromArts -
-        prevArtStat.speed +
-        artifact_of_strength[artIndex].speed
+  if (currentPlayerData.trials[typeIndex].isTrialComplete) {
+    if (currentPlayerData.trials[typeIndex].equippedArtId === "none") {
+      if (typeID === "soulArt") {
+        newPlayerData.multiplierSpeedFromArts =
+          currentPlayerData.multiplierSpeedFromArts + currentArt.speed
 
-      localPlayerData.flatJumpHeightFromArts =
-        localPlayerData.flatJumpHeightFromArts -
-        prevArtStat.jumpHeight +
-        artifact_of_strength[artIndex].jumpHeight
+        newPlayerData.multiplierJumpHeightFromArts =
+          currentPlayerData.multiplierJumpHeightFromArts + currentArt.jumpHeight
+      } else if (
+        typeID === "strArt" ||
+        typeID === "dexArt" ||
+        typeID === "luckArt"
+      ) {
+        newPlayerData.flatSpeedFromArts =
+          currentPlayerData.flatSpeedFromArts + (currentArt?.speed || 0)
+
+        newPlayerData.flatJumpHeightFromArts =
+          currentPlayerData.flatJumpHeightFromArts +
+          (currentArt?.jumpHeight || 0)
+
+        newPlayerData.flatLuckFromArts =
+          currentPlayerData.flatLuckFromArts + (currentArt?.luck || 0)
+      }
+    } else {
+      const prevArtStat: { speed: number; jumpHeight: number; luck: number } = {
+        speed: 0,
+        jumpHeight: 0,
+        luck: 0,
+      }
+      const prevArt = currentPlayerData.inventory.find(
+        (prevArt) =>
+          prevArt.id === currentPlayerData.trials[typeIndex].equippedArtId
+      )
+
+      prevArtStat.speed = prevArt?.speed || 0
+      prevArtStat.jumpHeight = prevArt?.jumpHeight || 0
+      prevArtStat.luck = prevArt?.luck || 0
+
+      if (typeID === "soulArt") {
+        newPlayerData.multiplierSpeedFromArts =
+          currentPlayerData.multiplierSpeedFromArts -
+          (prevArtStat?.speed || 0) +
+          (currentArt?.speed || 0)
+        newPlayerData.multiplierJumpHeightFromArts =
+          currentPlayerData.multiplierJumpHeightFromArts -
+          (prevArtStat?.speed || 0) +
+          (currentArt?.speed || 0)
+      } else if (
+        typeID === "strArt" ||
+        typeID === "dexArt" ||
+        typeID === "luckArt"
+      ) {
+        newPlayerData.flatSpeedFromArts =
+          currentPlayerData.flatSpeedFromArts -
+          (prevArtStat?.speed || 0) +
+          (currentArt?.speed || 0)
+
+        newPlayerData.flatJumpHeightFromArts =
+          currentPlayerData.flatJumpHeightFromArts -
+          (prevArtStat?.jumpHeight || 0) +
+          (currentArt?.jumpHeight || 0)
+
+        newPlayerData.flatLuckFromArts =
+          currentPlayerData.flatLuckFromArts -
+          (prevArtStat?.luck || 0) +
+          (currentArt?.luck || 0)
+      }
     }
+
+    newPlayerData.trials[typeIndex].equippedArtId = currentArt.id
+    newPlayerData.trials[typeIndex].name = currentArt.name
+    newPlayerData.trials[typeIndex].quality = currentArt.quality
   }
+  return newPlayerData
 }

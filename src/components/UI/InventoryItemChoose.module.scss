@@ -1,0 +1,54 @@
+.itemDropListBox {
+  margin: 1px 1px 1px 5px;
+  padding: 5px;
+  grid-area: dropList;
+  cursor: pointer;
+  border: 1px solid rgb(248, 182, 182);
+
+  position: relative;
+  .itemName {
+    letter-spacing: 2;
+    font-style: oblique;
+  }
+  //  .itemStats {
+  //  }
+
+  .hiddenDropList {
+    cursor: auto;
+    visibility: hidden;
+    position: absolute;
+    width: max-content;
+    font-size: 1rem;
+    border: 3 white solid;
+    // border-style: outset none none inset;
+    // padding: 5px;
+    // border-radius: 5px;
+    color: white;
+    opacity: 0;
+    transition: opacity 0.2s;
+    left: 99%;
+    top: 10%;
+    background-color: #110f13;
+    &:hover {
+      .hiddenDropList {
+        visibility: visible;
+        opacity: 1;
+      }
+    }
+    // .singlItemInInventory {
+    // }
+  }
+  &:hover {
+    .hiddenDropList {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+
+  .hiddenDueToWrongType {
+    visibility: hidden;
+    opacity: 0;
+    width: 0px;
+    height: 0px;
+  }
+}

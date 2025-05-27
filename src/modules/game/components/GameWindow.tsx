@@ -24,14 +24,16 @@ import {
   drawChest,
 } from "@/src/modules/game/engine/rendering/drawsStatic"
 import { drawLava } from "@/src/modules/game/engine/rendering/drawLavaAnimation"
-import LevelChoose from "@/src/components/UI/levelChoose"
-import GameInfo from "@/src/components/UI/InfoBoxes/gameInfo"
+import LevelChoose from "@/src/components/UI/LevelChoose"
+import GameInfo from "@/src/components/UI/InfoBoxes/GameInfo"
 import playerPersonalInfo from "@/src/modules/game/playerPersonalInfo/playerPersonalInfo.json"
-import Inventory from "@/src/components/UI/inventory"
+import Inventory from "@/src/components/UI/Inventory"
 
 export default function GameWindow() {
-  const temporaryPersonalInfo: LocalPlayerData = playerPersonalInfo[0]
-
+  // const temporaryPersonalInfo: LocalPlayerData = playerPersonalInfo[0]
+  const [temporaryPersonalInfo, setTemporaryPersonalInfo] =
+    useState<LocalPlayerData>(playerPersonalInfo[0])
+  // console.log(temporaryPersonalInfo)
   const [currentLevel, setCurrentLevel] = useState<number>(0)
   function changeLevel(level: number) {
     setCurrentLevel(level)
@@ -132,7 +134,7 @@ export default function GameWindow() {
         speed: 100,
         jumpHeight: 100,
       }
-
+      // console.log(temporaryPersonalInfo)
       const characterParam: CharacterParam = {
         x: characterPermanentParam.x,
         y: characterPermanentParam.y,
@@ -140,8 +142,16 @@ export default function GameWindow() {
         height: characterPermanentParam.height,
         gravity: characterPermanentParam.gravity,
 
-        speed: characterBaseModifiableParam.speed,
-        jumpHeight: characterBaseModifiableParam.jumpHeight,
+        speed: Math.round(
+          (characterBaseModifiableParam.speed +
+            temporaryPersonalInfo.flatSpeedFromArts) *
+            (1 + temporaryPersonalInfo.multiplierSpeedFromArts / 100)
+        ),
+        jumpHeight: Math.round(
+          (characterBaseModifiableParam.jumpHeight +
+            temporaryPersonalInfo.flatJumpHeightFromArts) *
+            (1 + temporaryPersonalInfo.multiplierJumpHeightFromArts / 100)
+        ),
       }
 
       const characterCoords: CharacterCoords = {
@@ -199,7 +209,7 @@ export default function GameWindow() {
           canvas,
           onSurface
         )
-
+        // console.log(temporaryPersonalInfo.flatSpeedFromArts)
         moving(deltaTime, keysHold, characterParam, staticPlatforms)
         jump(keysHold, characterParam, onSurface)
 
@@ -212,7 +222,8 @@ export default function GameWindow() {
         }
         updateCharacterCoords()
         frameIdRef.current = requestAnimationFrame(gameLoop)
-        // console.log()
+        //console.log(characterParam.speed)
+        //console.log(characterParam.jumpHeight)
       }
 
       if (ctx) {
@@ -232,7 +243,7 @@ export default function GameWindow() {
       keysHold = {}
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentLevel, reset, memoizedEndgameLevel])
+  }, [currentLevel, reset, memoizedEndgameLevel, temporaryPersonalInfo])
 
   return (
     <div className={style.container}>
@@ -240,7 +251,10 @@ export default function GameWindow() {
         changeLevel={changeLevel}
         startEndgameLevel={startEndgameLevel}
       />
-      <Inventory temporaryPersonalInfo={temporaryPersonalInfo} />
+      <Inventory
+        temporaryPersonalInfo={temporaryPersonalInfo}
+        setTemporaryPersonalInfo={setTemporaryPersonalInfo}
+      />
       <canvas id="mainCanvas" className={style.canvasBox}></canvas>
       <GameInfo />
     </div>

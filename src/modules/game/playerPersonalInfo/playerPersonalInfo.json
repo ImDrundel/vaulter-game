@@ -1,55 +1,124 @@
 [
   {
     "nickname": "Mark",
-    "flatSpeedFromArts": 2,
-    "flatJumpHeightFromArts": 10,
-    "multiplierSpeedFromArts": 8,
-    "multiplierJumpHeightFromArts": 8,
+    "flatSpeedFromArts": 0,
+    "flatJumpHeightFromArts": 0,
+    "multiplierSpeedFromArts": 0,
+    "multiplierJumpHeightFromArts": 0,
+    "flatLuckFromArts": 0,
 
     "trials": [
       {
         "type": "Artifact of Strenght",
+        "typeID": "strArt",
         "isTrialComplete": true,
-        "equippedArtId": "light_feather",
+        "equippedArtId": "none",
         "name": "none",
-        "quality": "common"
+        "quality": "none"
       },
       {
         "type": "Artifact of Dexterity",
-        "isTrialComplete": true,
-        "equippedArtId": "runner_token",
+        "typeID": "dexArt",
+        "isTrialComplete": false,
+        "equippedArtId": "none",
         "name": "none",
-        "quality": "uncommon"
+        "quality": "none"
       },
       {
         "type": "Artifact of Soul",
+        "typeID": "soulArt",
         "isTrialComplete": true,
-        "equippedArtId": "shadow_amulet",
-        "name": "Dream Knot",
-        "quality": "rare"
+        "equippedArtId": "none",
+        "name": "none",
+        "quality": "none"
       },
       {
         "type": "Artifact of Luck",
+        "typeID": "luckArt",
         "isTrialComplete": true,
-        "equippedArtId": "stormweaver_fang",
+        "equippedArtId": "none",
         "name": "none",
-        "quality": "legendary"
+        "quality": "none"
       }
     ],
     "inventory": [
       {
         "type": "Artifact of Soul",
+        "typeID": "soulArt",
         "id": "dream_knot",
         "name": "Dream Knot",
         "quality": "uncommon",
-        "quantity": 2
+        "quantity": 2,
+        "speed": 8,
+        "jumpHeight": 8
+      },
+      {
+        "type": "Artifact of Soul",
+        "typeID": "soulArt",
+        "id": "eternal_fragment",
+        "name": "Eternal Fragment",
+        "quality": "legendary",
+        "quantity": 1,
+        "speed": 25,
+        "jumpHeight": 25
       },
       {
         "type": "Artifact of Strenght",
+        "typeID": "strArt",
         "id": "spirit_emblem",
         "name": "Spirit Emblem",
         "quality": "rare",
-        "quantity": 1
+        "quantity": 10,
+        "speed": 3,
+        "jumpHeight": 12
+      },
+      {
+        "type": "Artifact of Strenght",
+        "typeID": "strArt",
+        "id": "cracked_idol",
+        "name": "Cracked Idol",
+        "quality": "common",
+        "quantity": 2,
+        "speed": 1,
+        "jumpHeight": 5
+      },
+      {
+        "type": "Artifact of Strenght",
+        "typeID": "strArt",
+        "id": "titan_core",
+        "name": "Titan Core",
+        "quality": "epic",
+        "quantity": 1,
+        "speed": 5,
+        "jumpHeight": 18
+      },
+      {
+        "type": "Artifact of Dexterity",
+        "typeID": "dexArt",
+        "id": "runner_token",
+        "name": "Runner Token",
+        "quality": "uncommon",
+        "quantity": 3,
+        "speed": 8,
+        "jumpHeight": 2
+      },
+      {
+        "type": "Artifact of Luck",
+        "typeID": "luckArt",
+        "id": "fox_tail",
+        "name": "Fox Tail",
+        "quality": "rare",
+        "quantity": 4,
+        "luck": 12
+      },
+      {
+        "type": "Artifact of Luck",
+        "typeID": "luckArt",
+        "id": "hand_of_fate",
+        "name": "Hand of Fate",
+        "quality": "legendary",
+        "quantity": 1,
+        "luck": 25
       }
     ]
   }

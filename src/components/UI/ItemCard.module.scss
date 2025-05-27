@@ -1,0 +1,103 @@
+.container {
+  display: grid;
+  grid-template: "image name" "image stat";
+  grid-template-columns: 80px 1fr;
+  grid-template-rows: 20px 80px;
+  position: relative;
+  border: 1 solid white;
+  border-radius: 5px;
+  margin: 25px 15px;
+  padding: 5px;
+  width: 320px;
+  height: 80px;
+  cursor: pointer;
+  //   background-color: rgb(230, 230, 230, 0.9);
+
+  .image {
+    grid-area: image;
+    border-radius: 5px;
+    background-color: black;
+    &.customFrame {
+      &.common {
+        border: 2px solid white;
+      }
+      &.uncommon {
+        border: 2px solid rgb(4, 180, 4);
+      }
+      &.rare {
+        border: 3px solid rgb(25, 25, 250);
+      }
+      &.epic {
+        border: 3px solid rgb(170, 4, 170);
+      }
+      &.legendary {
+        border: 4px solid rgb(255, 60, 0);
+      }
+      &.none {
+        border: 2px dotted gray;
+      }
+    }
+  }
+  .name {
+    grid-area: name;
+    font-size: 1.2rem;
+  }
+  .statBox {
+    grid-area: stat;
+    padding-top: 5px;
+    font-style: italic;
+    .stat {
+      .hiddenStat {
+        display: none;
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+    }
+  }
+  .disenchant,
+  .delete {
+    width: 32px;
+    height: 32px;
+    position: absolute;
+    bottom: -3px;
+    border-radius: 3px;
+    border: 1px solid rgb(255, 255, 255);
+    .futureFeatureTag {
+      display: flex;
+      width: max-content;
+      background-color: black;
+      padding: 1px;
+      border-bottom: 1px solid white;
+      visibility: hidden;
+      opacity: 0;
+      z-index: 9;
+    }
+    &:hover {
+      .futureFeatureTag {
+        visibility: visible;
+        opacity: 1;
+      }
+    }
+  }
+  .disenchant {
+    right: 35px;
+    background-color: rgb(101, 69, 130);
+  }
+  .delete {
+    right: -3px;
+    background-color: rgb(133, 69, 69);
+  }
+
+  .count {
+    position: absolute;
+    right: -3px;
+    top: -3px;
+    padding: 2px;
+    width: max-content;
+    height: max-content;
+    background-color: rgb(14, 68, 68);
+    border: 1px solid white;
+    border-radius: 3px;
+  }
+}

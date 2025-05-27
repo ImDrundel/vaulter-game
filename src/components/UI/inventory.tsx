@@ -2,18 +2,27 @@ import style from "./inventory.module.scss"
 import Image from "next/image"
 // imsport artifact_of_soul from "@/public/assets/equipment/artifact_of_soul.json"
 // import chest from "@/public/assets/images/texture_chest.png"
+// import { equippingStrArt } from "@/src/modules/inventory/equippingItems"
 
 import { LocalPlayerData, TrialsData } from "@/src/types/types"
+import InventoryItemChoose from "./InventoryItemChoose"
+import { Dispatch, SetStateAction, useState } from "react"
+// import { useState } from "react"
 interface InventoryLocalProps {
   temporaryPersonalInfo: LocalPlayerData
+  setTemporaryPersonalInfo: Dispatch<SetStateAction<LocalPlayerData>>
 }
 
 const Inventory: React.FC<InventoryLocalProps> = ({
   temporaryPersonalInfo,
+  setTemporaryPersonalInfo,
 }) => {
-  // console.log(temporaryPersonalInfo)
+  const [playerData, setPlayerData] = useState<LocalPlayerData>(
+    temporaryPersonalInfo
+  )
+  //console.log(temporaryPersonalInfo)
   // const imageUrl = `/assets/images/${trials.equippedArtId}.png`
-
+  // equippingStrArtUIUpdate(playerData, equippingStrArt, 1)
   return (
     <div className={style.container}>
       <h1 className={style.inventoryHeader}>
@@ -21,7 +30,7 @@ const Inventory: React.FC<InventoryLocalProps> = ({
       </h1>
 
       {temporaryPersonalInfo.trials.map((trials: TrialsData) => (
-        <div key={trials.type} className={style.itemSlot}>
+        <div key={trials.typeID} className={style.itemSlot}>
           <div className={style.itemType}>{trials.type}</div>
 
           <Image
@@ -50,13 +59,27 @@ const Inventory: React.FC<InventoryLocalProps> = ({
             height={64}
             alt="artImg"
           />
-          <div className={style.itemDropList}>
+          <InventoryItemChoose
+            // temporaryPersonalInfo={temporaryPersonalInfo}
+            trials={trials}
+            playerData={playerData}
+            setPlayerData={setPlayerData}
+            setTemporaryPersonalInfo={setTemporaryPersonalInfo}
+          />
+          {/* <div
+            className={style.itemDropListBox}
+            onClick={() => {
+              equippingStrArtUIUpdate(playerData, equippingStrArt, 2)
+            }}
+          >
             <span className={style.itemName}>
               {trials.equippedArtId == "none"
                 ? "No equppied item"
                 : trials.name}
             </span>
-          </div>
+
+            <div className={`style.${trials.typeID}DropList`}></div>
+          </div> */}
         </div>
       ))}
 
@@ -66,8 +89,8 @@ const Inventory: React.FC<InventoryLocalProps> = ({
         <p>
           Speed:
           {Math.round(
-            (100 + temporaryPersonalInfo.flatSpeedFromArts) *
-              (1 + temporaryPersonalInfo.multiplierSpeedFromArts / 100)
+            (100 + playerData.flatSpeedFromArts) *
+              (1 + playerData.multiplierSpeedFromArts / 100)
           )}
           %
         </p>
@@ -75,10 +98,14 @@ const Inventory: React.FC<InventoryLocalProps> = ({
         <p>
           Jump height:
           {Math.round(
-            (100 + temporaryPersonalInfo.flatJumpHeightFromArts) *
-              (1 + temporaryPersonalInfo.multiplierJumpHeightFromArts / 100)
+            (100 + playerData.flatJumpHeightFromArts) *
+              (1 + playerData.multiplierJumpHeightFromArts / 100)
           )}
           %
+        </p>
+        <p>
+          Luck:
+          {Math.round(100 + playerData.flatLuckFromArts)}%
         </p>
       </div>
     </div>
