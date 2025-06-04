@@ -1,11 +1,12 @@
 "use client"
 import { useEffect, useMemo, useRef, useState } from "react"
 import style from "./GameWindow.module.scss"
-import level_01 from "@/public/assets/levels/level_01.json"
-import level_02 from "@/public/assets/levels/level_02.json"
-import level_03 from "@/public/assets/levels/level_03.json"
+import strTrial from "@/public/assets/levels/strTrial.json"
+import dexTrial from "@/public/assets/levels/dexTrial.json"
+import soulTrial from "@/public/assets/levels/soulTrial.json"
+import luckTrial from "@/public/assets/levels/luckTrial.json"
 import { moving } from "@/src/modules/game/engine/input/moving"
-import { Falling } from "@/src/modules/game/engine/physics/falling"
+import { falling } from "@/src/modules/game/engine/physics/falling"
 import { jump } from "@/src/modules/game/engine/input/jump"
 import { generateEndgameLevel } from "@/src/modules/game/levels/generateEndgame"
 import {
@@ -53,7 +54,7 @@ export default function GameWindow() {
 
     //SetCurrentLevel('count of levels') must be increased manually when adding a new level
     //No automation as there are no plans to add more levels
-    setCurrentLevel(3)
+    setCurrentLevel(4)
     return finalEndgameLevel
   }
   useEffect(() => {
@@ -88,9 +89,16 @@ export default function GameWindow() {
     const onSurface: OnSurface = {
       onLava: false,
       onPlatform: false,
+      onLastPlatform: false,
     }
 
-    const levelChoose = [level_01, level_02, level_03, memoizedEndgameLevel]
+    const levelChoose = [
+      strTrial,
+      dexTrial,
+      soulTrial,
+      luckTrial,
+      memoizedEndgameLevel,
+    ]
 
     const canvas = document.getElementById(
       "mainCanvas"
@@ -197,11 +205,12 @@ export default function GameWindow() {
 
         drawCharacter(ctx!, characterParam, texture_character)
         drawStaticPlatform(staticPlatforms, ctx, texture_platform)
+        //if
         drawChest(staticPlatforms, ctx, texture_chest)
         drawLava(ctx, canvas, lavaTime, 0)
         drawLava(ctx, canvas, lavaTime, 1)
 
-        Falling(
+        falling(
           deltaTime,
           staticPlatforms,
           characterCoords,
@@ -220,9 +229,10 @@ export default function GameWindow() {
         } else {
           setReset(false)
         }
+
         updateCharacterCoords()
         frameIdRef.current = requestAnimationFrame(gameLoop)
-        //console.log(characterParam.speed)
+        console.log(onSurface.onLastPlatform)
         //console.log(characterParam.jumpHeight)
       }
 

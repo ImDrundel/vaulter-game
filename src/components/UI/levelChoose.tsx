@@ -11,10 +11,11 @@ const LevelChoose: React.FC<LevelChooseProps> = ({
 }) => {
   //New object to levelCount must be increased manually when adding a new level
   //No automation as there are no plans to add more levels
-  const levelCount: Array<{ level: number; difficulty: number }> = [
-    { level: 1, difficulty: 1 },
-    { level: 2, difficulty: 2 },
-    { level: 3, difficulty: 3 },
+  const levelCount: Array<{ level: number; name: string }> = [
+    { level: 1, name: "Trial of Strength" },
+    { level: 2, name: "Trial of Dexterity" },
+    { level: 3, name: "Trial of Soul" },
+    { level: 4, name: "Trial of Luck" },
   ]
 
   function changeDifficulty(count: number) {
@@ -24,7 +25,7 @@ const LevelChoose: React.FC<LevelChooseProps> = ({
 
   return (
     <div className={style.container}>
-      <span className={style.levelChooseText}>Choose level:</span>
+      <span className={style.levelChooseText}>Choose Trial:</span>
       <div>
         {levelCount.map((level) => (
           <button
@@ -32,7 +33,7 @@ const LevelChoose: React.FC<LevelChooseProps> = ({
             key={level.level}
             onClick={() => changeLevel(level.level - 1)}
           >
-            {level.level}
+            {level.name}
           </button>
         ))}
       </div>

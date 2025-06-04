@@ -5,7 +5,7 @@ import {
   OnSurface,
 } from "../../../../types/types"
 
-export function Falling(
+export function falling(
   deltaTime: number,
   staticPlatforms: Array<Platform>,
   characterCoords: CharacterCoords,
@@ -14,7 +14,7 @@ export function Falling(
   onSurface: OnSurface
 ) {
   onSurface.onPlatform = false
-  staticPlatforms.forEach((platform) => {
+  staticPlatforms.forEach((platform, index) => {
     if (
       characterCoords.bottom >= platform.topBorder &&
       characterCoords.bottom <=
@@ -27,6 +27,12 @@ export function Falling(
       characterParam.gravity = 0
       onSurface.onPlatform = true
       characterParam.y = platform.topBorder - characterParam.height + 1
+
+      if (index === staticPlatforms.length - 1) {
+        onSurface.onLastPlatform = true
+      } else {
+        onSurface.onLastPlatform = false
+      }
     }
   })
   if (characterParam.y <= canvas!.height - characterParam.height) {

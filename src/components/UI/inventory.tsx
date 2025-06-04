@@ -1,4 +1,4 @@
-import style from "./inventory.module.scss"
+import style from "./Inventory.module.scss"
 import Image from "next/image"
 // imsport artifact_of_soul from "@/public/assets/equipment/artifact_of_soul.json"
 // import chest from "@/public/assets/images/texture_chest.png"
