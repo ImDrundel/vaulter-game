@@ -1,14 +1,18 @@
 "use client"
 import { useEffect, useMemo, useRef, useState } from "react"
 import style from "./GameWindow.module.scss"
+import playerPersonalInfo from "@/src/modules/game/playerPersonalInfo/playerPersonalInfo.json"
 import strTrial from "@/public/assets/levels/strTrial.json"
 import dexTrial from "@/public/assets/levels/dexTrial.json"
 import soulTrial from "@/public/assets/levels/soulTrial.json"
 import luckTrial from "@/public/assets/levels/luckTrial.json"
 import { moving } from "@/src/modules/game/engine/input/moving"
 import { falling } from "@/src/modules/game/engine/physics/falling"
+import { obtainingArt } from "@/src/modules/inventory/obtainingArt"
 import { jump } from "@/src/modules/game/engine/input/jump"
 import { generateEndgameLevel } from "@/src/modules/game/levels/generateEndgame"
+import { drawLava } from "@/src/modules/game/engine/rendering/drawLavaAnimation"
+import { unlockArtSlot } from "../playerPersonalInfo/unlockArtSlot"
 import {
   Platform,
   CharacterParam,
@@ -23,11 +27,10 @@ import {
   drawCharacter,
   drawStaticPlatform,
   drawChest,
+  drawAltar,
 } from "@/src/modules/game/engine/rendering/drawsStatic"
-import { drawLava } from "@/src/modules/game/engine/rendering/drawLavaAnimation"
 import LevelChoose from "@/src/components/UI/LevelChoose"
 import GameInfo from "@/src/components/UI/InfoBoxes/GameInfo"
-import playerPersonalInfo from "@/src/modules/game/playerPersonalInfo/playerPersonalInfo.json"
 import Inventory from "@/src/components/UI/Inventory"
 
 export default function GameWindow() {
@@ -48,6 +51,8 @@ export default function GameWindow() {
     () => finalEndgameLevel,
     [finalEndgameLevel]
   )
+  const [levelDifficulty, setlevelDifficulty] = useState<number>(1)
+
   function startEndgameLevel(diff: number) {
     const endgameLevelJSON = generateEndgameLevel(diff)
     setFinalEndgameLevel(JSON.parse(endgameLevelJSON))
@@ -194,6 +199,8 @@ export default function GameWindow() {
       texture_character.src = "/assets/images/texture_character.png"
       const texture_chest = new Image()
       texture_chest.src = "/assets/images/texture_chest.png"
+      const texture_trial_altar = new Image()
+      texture_trial_altar.src = "/assets/images/texture_trial_altar.png"
       let lavaTime = 0
 
       function gameLoop(timestamp: number) {
@@ -203,10 +210,28 @@ export default function GameWindow() {
         // console.log(deltaTime, timestamp, lavaTime)
         ctx!.clearRect(0, 0, canvas!.width, canvas!.height)
 
+        if (currentLevel == 4) {
+          drawChest(staticPlatforms, ctx, texture_chest)
+          obtainingArt(
+            temporaryPersonalInfo,
+
+            setTemporaryPersonalInfo,
+            currentLevel,
+            onSurface.onLastPlatform
+          )
+        } else {
+          drawAltar(staticPlatforms, ctx, texture_trial_altar)
+          unlockArtSlot(
+            temporaryPersonalInfo,
+            setTemporaryPersonalInfo,
+            currentLevel,
+            onSurface.onLastPlatform
+          )
+        }
+
         drawCharacter(ctx!, characterParam, texture_character)
         drawStaticPlatform(staticPlatforms, ctx, texture_platform)
-        //if
-        drawChest(staticPlatforms, ctx, texture_chest)
+
         drawLava(ctx, canvas, lavaTime, 0)
         drawLava(ctx, canvas, lavaTime, 1)
 
@@ -232,8 +257,8 @@ export default function GameWindow() {
 
         updateCharacterCoords()
         frameIdRef.current = requestAnimationFrame(gameLoop)
-        console.log(onSurface.onLastPlatform)
-        //console.log(characterParam.jumpHeight)
+        // console.log(currentLevel)
+        // console.log(temporaryPersonalInfo.trials[currentLevel].isTrialComplete)
       }
 
       if (ctx) {
@@ -258,6 +283,8 @@ export default function GameWindow() {
   return (
     <div className={style.container}>
       <LevelChoose
+        levelDifficulty={levelDifficulty}
+        setlevelDifficulty={setlevelDifficulty}
         changeLevel={changeLevel}
         startEndgameLevel={startEndgameLevel}
       />

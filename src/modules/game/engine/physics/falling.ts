@@ -1,9 +1,9 @@
 import {
-  Platform,
   CharacterCoords,
   CharacterParam,
   OnSurface,
-} from "../../../../types/types"
+  Platform,
+} from "@/src/types/types"
 
 export function falling(
   deltaTime: number,

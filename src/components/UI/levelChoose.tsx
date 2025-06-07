@@ -1,13 +1,17 @@
-import { useState } from "react"
+import { Dispatch, SetStateAction } from "react"
 import style from "./levelChoose.module.scss"
 
 interface LevelChooseProps {
   changeLevel(index: number): void
   startEndgameLevel(diff: number): void
+  levelDifficulty: number
+  setlevelDifficulty: Dispatch<SetStateAction<number>>
 }
 const LevelChoose: React.FC<LevelChooseProps> = ({
   changeLevel,
   startEndgameLevel,
+  levelDifficulty,
+  setlevelDifficulty,
 }) => {
   //New object to levelCount must be increased manually when adding a new level
   //No automation as there are no plans to add more levels
@@ -21,7 +25,6 @@ const LevelChoose: React.FC<LevelChooseProps> = ({
   function changeDifficulty(count: number) {
     if (count >= 1) setlevelDifficulty(count)
   }
-  const [levelDifficulty, setlevelDifficulty] = useState<number>(1)
 
   return (
     <div className={style.container}>

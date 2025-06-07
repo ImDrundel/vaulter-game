@@ -48,7 +48,7 @@ export interface CharacterCoords {
 export interface OnSurface {
   onLava?: boolean
   onPlatform?: boolean
-  onLastPlatform?: boolean
+  onLastPlatform: boolean
 }
 
 export interface TrialsData {

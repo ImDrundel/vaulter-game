@@ -47,11 +47,28 @@ export function drawChest(
     texture_chest,
     0,
     0,
-    50,
-    32,
-    staticPlatforms[staticPlatforms.length - 1].rightBorder - 50,
-    staticPlatforms[staticPlatforms.length - 1].topBorder - 32,
-    50,
-    32
+    64,
+    55,
+    staticPlatforms[staticPlatforms.length - 1].rightBorder - 64,
+    staticPlatforms[staticPlatforms.length - 1].topBorder - 55,
+    64,
+    55
+  )
+}
+export function drawAltar(
+  staticPlatforms: Array<Platform>,
+  ctx: CanvasRenderingContext2D | null,
+  texture_trial_altar: HTMLImageElement
+) {
+  ctx!.drawImage(
+    texture_trial_altar,
+    0,
+    0,
+    80,
+    101,
+    staticPlatforms[staticPlatforms.length - 1].rightBorder - 80,
+    staticPlatforms[staticPlatforms.length - 1].topBorder - 101,
+    80,
+    101
   )
 }

@@ -36,7 +36,7 @@ export const generateEndgameLevel = (diff: number) => {
     return newX
   }
 
-  for (let i = 1; i < 100 + diff * 2; i++) {
+  for (let i = 1; i < 3 + diff * 2; i++) {
     const newY = generateRandomY(endgameLevel[i - 1].y)
     const newX = generateRandomX(
       endgameLevel[i - 1].x,
